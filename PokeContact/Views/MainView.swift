@@ -22,7 +22,7 @@ final class MainView: UIView {
     }
     
     private func configureTableView() {
-        tableView.register(MainTableViewCell.self, forHeaderFooterViewReuseIdentifier: "MainTableViewCell")
+        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: "MainTableViewCell")
         tableView.dataSource = self
         tableView.delegate = self
         
