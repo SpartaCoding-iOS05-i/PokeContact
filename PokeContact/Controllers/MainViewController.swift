@@ -17,7 +17,8 @@ final class MainViewController: UIViewController {
     
     private func configureNavigationBar() {
         self.navigationItem.title = "친구 목록"
-        let addMemberButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addMemberButtonTapped))
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addMemberButtonTapped))
     }
     
     @objc private func addMemberButtonTapped() {
