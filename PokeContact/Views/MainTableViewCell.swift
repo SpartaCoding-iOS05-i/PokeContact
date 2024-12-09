@@ -38,4 +38,13 @@ final class MainTableViewCell: UITableViewCell {
         stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    private lazy var cellStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [profileNameStackView, phoneNumberLabel])
+        stackView.spacing = 20
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
 }
