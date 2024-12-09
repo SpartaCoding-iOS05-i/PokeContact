@@ -14,5 +14,10 @@ final class AddMemberViewController: UIViewController {
     
     private func configureNavigationBar() {
         self.navigationItem.title = "연락처 추가"
+        let completeButton = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
+    }
+    
+    @objc private func completeButtonTapped() {
+        
     }
 }
