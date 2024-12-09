@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, MainViewModelDelegate {
     private let viewModel: MainViewModel
 
     init(viewModel: MainViewModel) {
@@ -24,8 +24,10 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        viewModel.delegate = self
     }
-
+    
+    // MARK: - UI Configuration
     private func configureUI() {
         view.backgroundColor = .systemPink
         
@@ -46,7 +48,7 @@ class MainViewController: UIViewController {
     }
     
     @objc private func didTapButton() {
-        viewModel.didTapNext()
+        viewModel.didTapNavigate()
     }
 }
 

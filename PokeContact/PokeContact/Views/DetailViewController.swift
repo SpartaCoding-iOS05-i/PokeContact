@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, DetailViewModelDelegate {
     private let viewModel: DetailViewModel
     
     init(viewModel: DetailViewModel) {
@@ -22,6 +22,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        viewModel.delegate = self
     }
 
     private func configureUI() {
