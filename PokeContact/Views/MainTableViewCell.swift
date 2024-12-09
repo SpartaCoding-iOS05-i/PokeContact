@@ -82,4 +82,17 @@ final class MainTableViewCell: UITableViewCell {
             cellStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
     }
+    
+    func configureCellData(profileImage: String, name: String, phoneNumber: String) {
+        self.profileImageView.image = profileImage.toUIImage()
+        self.nameLabel.text = name
+        self.phoneNumberLabel.text = phoneNumber
+    }
+}
+
+extension String {
+    func toUIImage() -> UIImage? {
+        guard let imageData = Data(base64Encoded: self) else { return nil }
+        return UIImage(data: imageData)
+    }
 }
