@@ -11,6 +11,8 @@ final class MainTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 10
         imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -47,6 +49,11 @@ final class MainTableViewCell: UITableViewCell {
         stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
