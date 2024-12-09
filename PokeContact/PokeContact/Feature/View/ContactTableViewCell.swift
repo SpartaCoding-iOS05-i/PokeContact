@@ -17,26 +17,22 @@ final class ContactTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.layer.borderWidth = 1.0
         imageView.layer.borderColor = UIColor.gray.cgColor
-        imageView.layer.cornerRadius = 22
+        imageView.layer.cornerRadius = 30
         imageView.clipsToBounds = true
-        imageView.snp.makeConstraints { make in
-            make.width.equalTo(44)
-            make.height.equalTo(44)
-        }
         return imageView
     }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "name"
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.text = "010-1111-1111"
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
