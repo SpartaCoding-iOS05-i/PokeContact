@@ -38,6 +38,18 @@ final class AddMemberView: UIView {
         return textField
     }()
     
+    private let phoneNumberTextField: UITextField = {
+        let textField = UITextField()
+        textField.frame.size.height = 30
+        textField.borderStyle = .roundedRect
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
+        textField.autocapitalizationType = .none
+        textField.placeholder = "전화번호"
+        textField.clearButtonMode = .whileEditing
+        return textField
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.backgroundColor = .white
