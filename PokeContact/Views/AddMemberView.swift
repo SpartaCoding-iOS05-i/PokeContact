@@ -17,6 +17,15 @@ final class AddMemberView: UIView {
         return imageView
     }()
     
+    private let randomImageButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("랜덤 이미지 생성", for: .normal)
+        button.setTitleColor(.lightGray, for: .normal)
+        button.backgroundColor = .clear
+        button.titleLabel?.font = .systemFont(ofSize: 10)
+        return button
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.backgroundColor = .white
