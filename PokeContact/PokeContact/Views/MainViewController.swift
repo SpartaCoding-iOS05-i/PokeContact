@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class MainViewController: UIViewController {
     private let viewModel: MainViewModel
@@ -26,19 +28,21 @@ class MainViewController: UIViewController {
 
     private func configureUI() {
         view.backgroundColor = .systemPink
-        let button = UIButton(type: .system)
-        button.setTitle("Button", for: .normal)
-        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
         
-        NSLayoutConstraint.activate([
-                button.centerXAnchor.constraint(equalTo: view.centerXAnchor),  // 가로축 중앙 정렬
-                button.centerYAnchor.constraint(equalTo: view.centerYAnchor),  // 세로축 중앙 정렬
-                button.widthAnchor.constraint(equalToConstant: 120),           // 버튼 너비
-                button.heightAnchor.constraint(equalToConstant: 44)            // 버튼 높이
-            ])
+        let button = UIButton(type: .system).then {
+            $0.setTitle("Button", for: .normal)
+            $0.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        }
         
+        [
+            button,
+        ].forEach { view.addSubview($0) }
+
+        button.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(120)
+            $0.height.equalTo(44)
+        }
     }
     
     @objc private func didTapButton() {

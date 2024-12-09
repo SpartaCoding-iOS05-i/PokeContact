@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		714F13882D06C03600691BAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 714F13872D06C03600691BAD /* SnapKit */; };
+		714F138D2D06C04500691BAD /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 714F138C2D06C04500691BAD /* Then */; };
+		714F13902D06C06000691BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 714F138F2D06C06000691BAD /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		714F13212D0670E100691BAD /* PokeContact.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeContact.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -48,6 +54,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				714F13882D06C03600691BAD /* SnapKit in Frameworks */,
+				714F13902D06C06000691BAD /* Alamofire in Frameworks */,
+				714F138D2D06C04500691BAD /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +99,9 @@
 			);
 			name = PokeContact;
 			packageProductDependencies = (
+				714F13872D06C03600691BAD /* SnapKit */,
+				714F138C2D06C04500691BAD /* Then */,
+				714F138F2D06C06000691BAD /* Alamofire */,
 			);
 			productName = PokeContact;
 			productReference = 714F13212D0670E100691BAD /* PokeContact.app */;
@@ -119,6 +131,11 @@
 			);
 			mainGroup = 714F13182D0670E100691BAD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				714F13862D06C03600691BAD /* XCRemoteSwiftPackageReference "SnapKit" */,
+				714F138B2D06C04500691BAD /* XCRemoteSwiftPackageReference "Then" */,
+				714F138E2D06C06000691BAD /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 714F13222D0670E100691BAD /* Products */;
 			projectDirPath = "";
@@ -355,6 +372,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		714F13862D06C03600691BAD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		714F138B2D06C04500691BAD /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		714F138E2D06C06000691BAD /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		714F13872D06C03600691BAD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 714F13862D06C03600691BAD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		714F138C2D06C04500691BAD /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 714F138B2D06C04500691BAD /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		714F138F2D06C06000691BAD /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 714F138E2D06C06000691BAD /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 714F13192D0670E100691BAD /* Project object */;
 }
