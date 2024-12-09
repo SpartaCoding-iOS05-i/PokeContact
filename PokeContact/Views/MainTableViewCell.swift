@@ -13,4 +13,12 @@ final class MainTableViewCell: UITableViewCell {
         imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
+    
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 15)
+        label.textColor = .gray
+        label.textAlignment = .center
+        return label
+    }()
 }
