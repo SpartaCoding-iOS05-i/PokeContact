@@ -47,4 +47,18 @@ final class MainTableViewCell: UITableViewCell {
         stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        
+        configureStackViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("i0nit(coder:) has not been implemented")
+    }
+    
+    private func configureStackViews() {
+        self.contentView.addSubview(cellStackView)
+    }
 }
