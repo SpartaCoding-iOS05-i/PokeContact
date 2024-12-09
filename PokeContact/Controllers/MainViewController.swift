@@ -21,6 +21,12 @@ final class MainViewController: UIViewController {
     }
     
     @objc private func addMemberButtonTapped() {
+        let addMemberViewController = AddMemberViewController()
+        self.navigationController?.pushViewController(addMemberViewController, animated: true)
     }
 }
 
+@available(iOS 17.0, *)
+#Preview {
+    MainViewController()
+}
