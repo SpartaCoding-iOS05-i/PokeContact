@@ -50,6 +50,15 @@ final class AddMemberView: UIView {
         return textField
     }()
     
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [profileImageView, randomImageButton, nameTextField, phoneNumberTextField])
+        stackView.axis = .vertical
+        stackView.spacing = 15
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.backgroundColor = .white
