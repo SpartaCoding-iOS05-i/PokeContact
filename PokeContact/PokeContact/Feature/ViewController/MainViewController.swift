@@ -9,6 +9,21 @@ import UIKit
 import SnapKit
 
 final class MainViewController: UIViewController {
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "친구 목록"
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        return label
+    }()
+    
+    private let addButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("추가", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        return button
+    }()
+    
     private let contactTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(ContactTableViewCell.self, forCellReuseIdentifier: ContactTableViewCell.identifier)
@@ -28,6 +43,8 @@ final class MainViewController: UIViewController {
     
     private func configureUI() {
         let subviews = [
+            titleLabel,
+            addButton,
             contactTableView
         ]
         
@@ -35,11 +52,21 @@ final class MainViewController: UIViewController {
             view.addSubview($0)
         }
         
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            make.centerX.equalToSuperview()
+        }
+        
+        addButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(titleLabel)
+        }
+        
         contactTableView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 }
