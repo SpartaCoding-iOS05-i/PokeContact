@@ -52,6 +52,7 @@ final class MainTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         configureStackViews()
+        configureConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -60,5 +61,18 @@ final class MainTableViewCell: UITableViewCell {
     
     private func configureStackViews() {
         self.contentView.addSubview(cellStackView)
+    }
+    
+    private func configureConstraints() {
+        cellStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),
+            
+            cellStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            cellStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            cellStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+            cellStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+        ])
     }
 }
