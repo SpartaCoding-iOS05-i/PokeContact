@@ -29,4 +29,13 @@ final class MainTableViewCell: UITableViewCell {
         label.textAlignment = .center
         return label
     }()
+    
+    private lazy var profileNameStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
+        stackView.spacing = 10
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
 }
