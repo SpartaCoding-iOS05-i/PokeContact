@@ -21,4 +21,12 @@ final class MainTableViewCell: UITableViewCell {
         label.textAlignment = .center
         return label
     }()
+    
+    private let phoneNumberLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 15)
+        label.textColor = .gray
+        label.textAlignment = .center
+        return label
+    }()
 }
