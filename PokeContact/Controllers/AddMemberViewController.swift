@@ -10,6 +10,7 @@ final class AddMemberViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view = AddMemberView()
         configureNavigationBar()
     }
     
