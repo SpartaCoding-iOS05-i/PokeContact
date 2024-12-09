@@ -29,22 +29,15 @@ class MainViewController: UIViewController, MainViewModelDelegate {
     
     // MARK: - UI Configuration
     private func configureUI() {
-        view.backgroundColor = .systemPink
+        self.view.backgroundColor = .systemBackground
+        self.title = "Friend List"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Add",
+            style: .plain,
+            target: self,
+            action: #selector(didTapButton))
         
-        let button = UIButton(type: .system).then {
-            $0.setTitle("Button", for: .normal)
-            $0.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        }
         
-        [
-            button,
-        ].forEach { view.addSubview($0) }
-
-        button.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.equalTo(120)
-            $0.height.equalTo(44)
-        }
     }
     
     @objc private func didTapButton() {
