@@ -10,11 +10,13 @@ final class AddMemberViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigationBar()
     }
     
     private func configureNavigationBar() {
+        self.view.backgroundColor = .white
         self.navigationItem.title = "연락처 추가"
-        let completeButton = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
     }
     
     @objc private func completeButtonTapped() {
