@@ -59,6 +59,11 @@ final class AddMemberView: UIView {
         return stackView
     }()
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.backgroundColor = .white
