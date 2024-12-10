@@ -9,7 +9,7 @@ import UIKit
 final class MainTableViewCell: UITableViewCell {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.borderWidth = 10
+        imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.lightGray.cgColor
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
