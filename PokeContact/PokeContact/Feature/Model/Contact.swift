@@ -7,35 +7,8 @@
 import Foundation
 
 struct Contact {
+    let id: UUID
     let name: String
     let phoneNumber: String
     let profileImage: Data?
-
-    static let dummies = [
-        Contact(
-            name: "contactName",
-            phoneNumber: "010-1234-5678",
-            profileImage: nil
-        ),
-        Contact(
-            name: "contactName",
-            phoneNumber: "010-1234-5678",
-            profileImage: nil
-        ),
-        Contact(
-            name: "contactName",
-            phoneNumber: "010-1234-5678",
-            profileImage: nil
-        ),
-        Contact(
-            name: "contactName",
-            phoneNumber: "010-1234-5678",
-            profileImage: nil
-        ),
-        Contact(
-            name: "contactName",
-            phoneNumber: "010-1234-5678",
-            profileImage: nil
-        )
-    ]
 }
