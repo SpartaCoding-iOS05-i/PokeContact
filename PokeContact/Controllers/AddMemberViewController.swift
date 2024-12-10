@@ -46,6 +46,8 @@ final class AddMemberViewController: UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.container = appDelegate.persistentContainer
         createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func createMember(profileImage: String, name: String, phoneNumber: String) {
