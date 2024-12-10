@@ -16,12 +16,26 @@ final class AddMemberViewController: UIViewController {
         super.viewDidLoad()
         view = addMemberView
         configureNavigationBar()
+        configurePokeProfile()
     }
     
     private func configureNavigationBar() {
         self.view.backgroundColor = .white
         self.navigationItem.title = "연락처 추가"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
+    }
+    
+    private func configurePokeProfile() {
+        pokeDataManager.fetchRandomPokemon { result in
+            switch result {
+            case .success(let image):
+                DispatchQueue.main.async { [weak self] in
+                    self?.addMemberView.profileImageView.image = image
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
     }
     
     @objc private func completeButtonTapped() {
