@@ -84,9 +84,9 @@ final class ContactTableViewCell: UITableViewCell {
 extension ContactTableViewCell {
     
     func configureCell(with contact: Contact) {
-        // TODO: 이미지 로드 기능 추가
         nameLabel.text = contact.name
         phoneNumberLabel.text = contact.phoneNumber
+        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
     }
 }
 

@@ -30,6 +30,8 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
+    private var contacts: [Contact] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDelegates()
@@ -39,6 +41,13 @@ final class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+        do {
+            contacts = try CoreDataStack.shared.readAllData()
+            contactTableView.reloadData()
+        } catch let error {
+            print(error.localizedDescription)
+            contacts = []
+        }
     }
     
     private func setDelegates() {
@@ -97,7 +106,7 @@ extension MainViewController: UITableViewDelegate {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Contact.dummies.count
+        return contacts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,7 +114,7 @@ extension MainViewController: UITableViewDataSource {
             return ContactTableViewCell()
         }
         
-        cell.configureCell(with: Contact.dummies[indexPath.row])
+        cell.configureCell(with: contacts[indexPath.row])
         return cell
     }
 }
