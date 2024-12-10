@@ -11,17 +11,12 @@ import CoreData
 final class CoreDataStack: ObservableObject {
     static let shared = CoreDataStack()
     
-    // Create a persistent container as a lazy variable to defer instantiation until its first use.
     lazy var persistentContainer: NSPersistentContainer = {
         
-        // Pass the data model filename to the container’s initializer.
         let container = NSPersistentContainer(name: "Model")
         
-        // Load any persistent stores, which creates a store if none exists.
         container.loadPersistentStores { _, error in
             if let error {
-                // Handle the error appropriately. However, it's useful to use
-                // `fatalError(_:file:line:)` during development.
                 fatalError("Failed to load persistent stores: \(error.localizedDescription)")
             }
         }
@@ -32,16 +27,12 @@ final class CoreDataStack: ObservableObject {
 }
 
 extension CoreDataStack {
-    // Add a convenience method to commit changes to the store.
     func save() {
-        // Verify that the context has uncommitted changes.
         guard persistentContainer.viewContext.hasChanges else { return }
         
         do {
-            // Attempt to save changes.
             try persistentContainer.viewContext.save()
         } catch {
-            // Handle the error appropriately.
             print("Failed to save the context:", error.localizedDescription)
         }
     }
@@ -51,6 +42,7 @@ extension CoreDataStack {
             return
         }
         let newContact = NSManagedObject(entity: entity, insertInto: self.persistentContainer.viewContext)
+        newContact.setValue(UUID(), forKey: "id")
         newContact.setValue(name, forKey: "name")
         newContact.setValue(phoneNumber, forKey: "phoneNumber")
         newContact.setValue(profileImage, forKey: "profileImage")
@@ -67,10 +59,12 @@ extension CoreDataStack {
         
         let contactEntities = try persistentContainer.viewContext.fetch(request)
         for contactEntity in contactEntities as [NSManagedObject] {
-            if let name = contactEntity.value(forKey: "name") as? String,
+            if let id = contactEntity.value(forKey: "id") as? UUID,
+               let name = contactEntity.value(forKey: "name") as? String,
                let phoneNumber = contactEntity.value(forKey: "phoneNumber") as? String,
                let profileImage = contactEntity.value(forKey: "profileImage") as? Data {
                 let newContact = Contact(
+                    id: id,
                     name: name,
                     phoneNumber: phoneNumber,
                     profileImage: profileImage
