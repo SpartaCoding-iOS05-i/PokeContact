@@ -6,11 +6,10 @@
 //
 
 import UIKit
-import CoreData
 
 final class MainViewController: UIViewController {
     private let mainView = MainView()
-    private var container: NSPersistentContainer!
+    private let pokeDataManager = PokeDataManager()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -31,18 +30,13 @@ final class MainViewController: UIViewController {
     
     @objc private func addMemberButtonTapped() {
         let addMemberViewController = AddMemberViewController()
+        addMemberViewController.configurePokeProfile()
         self.navigationController?.pushViewController(addMemberViewController, animated: true)
     }
     
     private func bind() {
-        do {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            self.container = appDelegate.persistentContainer
-            let pokeContacts = try self.container.viewContext.fetch(PokeContactBook.fetchRequest())
-            mainView.configurePokeContacts(contacts: pokeContacts)
-        } catch {
-            print("데이터 읽기 실패")
-        }
+        guard let contacts = pokeDataManager.readMembers() else { return }
+        self.mainView.configurePokeContacts(contacts: contacts) 
     }
 }
 
