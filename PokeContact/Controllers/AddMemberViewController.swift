@@ -9,7 +9,7 @@ import CoreData
 
 final class AddMemberViewController: UIViewController {
     private let addMemberView = AddMemberView()
-    private var container: NSPersistentContainer!
+    private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ final class AddMemberViewController: UIViewController {
     }
     
     private func configurePokeProfile() {
-        pokeDataManager.fetchRandomPokemon { result in
+        networkManager.fetchRandomPokemon { result in
             switch result {
             case .success(let image):
                 DispatchQueue.main.async { [weak self] in
@@ -43,28 +43,8 @@ final class AddMemberViewController: UIViewController {
         let image = addMemberView.profileImageView.image?.toString() ?? ""
         let name = addMemberView.nameTextField.text ?? ""
         let phoneNumber = addMemberView.phoneNumberTextField.text ?? ""
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.container = appDelegate.persistentContainer
-        createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
-        
+        pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    private func createMember(profileImage: String, name: String, phoneNumber: String) {
-        guard let entity = NSEntityDescription.entity(forEntityName: PokeContactBook.className, in: self.container.viewContext) else { return }
-        
-        let newPoke = NSManagedObject(entity: entity, insertInto: self.container.viewContext)
-        newPoke.setValue(profileImage, forKey: PokeContactBook.Key.profileImage)
-        newPoke.setValue(name, forKey: PokeContactBook.Key.name)
-        newPoke.setValue(phoneNumber, forKey: PokeContactBook.Key.phoneNumber)
-        
-        do {
-            try self.container.viewContext.save()
-            print("context save 성공")
-        } catch {
-            print("context svae 실패")
-        }
     }
 }
 
