@@ -29,6 +29,7 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         bindViewModel()
         viewModel.fetchContacts()
         viewModel.delegate = self
+        testCRuD()
     }
     
     // MARK: - UI Configuration
@@ -50,6 +51,10 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
     
     private func bindViewModel() {
@@ -69,6 +74,7 @@ extension MainViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let contact = viewModel.contacts[indexPath.row]
         cell.textLabel?.text = contact.fullName
+        // MODIFY
         return cell
     }
 }
@@ -77,10 +83,10 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let contact = viewModel.contacts[indexPath.row]
-        print("Selected contact: \(viewModel.contacts[indexPath.row])")
+        print("Selected contact: \(contact.fullName ?? "")")
     }
     
-    func tableview(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             viewModel.deleteContact(at: indexPath.row)
         }
@@ -88,5 +94,14 @@ extension MainViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
+    }
+}
+
+// MARK: - Test Methods
+extension MainViewController {
+    func testCRuD() {
+        viewModel.addContact(name: "TEST1", phone: "010-1111-2222")
+        viewModel.addContact(name: "TEST2", phone: "010-2222-3333")
+        viewModel.addContact(name: "TEST3", phone: "010-3333-4444")
     }
 }
