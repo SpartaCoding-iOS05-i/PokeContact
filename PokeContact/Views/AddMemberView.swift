@@ -6,7 +6,13 @@
 //
 import UIKit
 
+protocol RandomImageButtonDelegate: AnyObject {
+    func changeRandomImage()
+}
+
 final class AddMemberView: UIView {
+    weak var delegate: RandomImageButtonDelegate?
+    
     private(set) var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 5
@@ -73,6 +79,7 @@ final class AddMemberView: UIView {
     private func configureUI() {
         self.backgroundColor = .white
         self.addSubview(stackView)
+        self.randomImageButton.addTarget(self, action: #selector(randomImageButtonTapped), for: .touchUpInside)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -94,5 +101,9 @@ final class AddMemberView: UIView {
     
     func configureProfileImage(image: UIImage) {
         self.profileImageView.image = image
+    }
+    
+    @objc private func randomImageButtonTapped() {
+        delegate?.changeRandomImage()
     }
 }
