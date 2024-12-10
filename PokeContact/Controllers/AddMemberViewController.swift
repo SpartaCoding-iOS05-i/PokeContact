@@ -5,7 +5,6 @@
 //  Created by 이명지 on 12/9/24.
 //
 import UIKit
-import CoreData
 
 final class AddMemberViewController: UIViewController {
     private let addMemberView = AddMemberView()
@@ -17,7 +16,6 @@ final class AddMemberViewController: UIViewController {
         view = addMemberView
         addMemberView.delegate = self
         configureNavigationBar()
-        configurePokeProfile()
     }
     
     private func configureNavigationBar() {
@@ -26,7 +24,7 @@ final class AddMemberViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
     }
     
-    private func configurePokeProfile() {
+    func configurePokeProfile() {
         networkManager.fetchRandomPokemon { result in
             switch result {
             case .success(let image):
