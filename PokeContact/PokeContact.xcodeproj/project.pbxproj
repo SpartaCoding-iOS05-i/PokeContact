@@ -10,10 +10,14 @@
 		714F13882D06C03600691BAD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 714F13872D06C03600691BAD /* SnapKit */; };
 		714F138D2D06C04500691BAD /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 714F138C2D06C04500691BAD /* Then */; };
 		714F13902D06C06000691BAD /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 714F138F2D06C06000691BAD /* Alamofire */; };
+		714F13DC2D07D3D000691BAD /* Contact+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F13DB2D07D3D000691BAD /* Contact+CoreDataProperties.swift */; };
+		714F13DD2D07D3D000691BAD /* Contact+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F13DA2D07D3D000691BAD /* Contact+CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		714F13212D0670E100691BAD /* PokeContact.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokeContact.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		714F13DA2D07D3D000691BAD /* Contact+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataClass.swift"; path = "PokeContact/Models/Contact+CoreDataClass.swift"; sourceTree = "<group>"; };
+		714F13DB2D07D3D000691BAD /* Contact+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Contact+CoreDataProperties.swift"; path = "PokeContact/Models/Contact+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -21,28 +25,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				App/Info.plist,
-				App/PokeContact.xcdatamodeld,
 			);
 			target = 714F13202D0670E100691BAD /* PokeContact */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		714F13692D06716200691BAD /* Exceptions for "PokeContact" folder in "Compile Sources" phase from "PokeContact" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 714F131D2D0670E100691BAD /* Sources */;
-			membershipExceptions = (
-				App/PokeContact.xcdatamodeld,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		714F13602D06716200691BAD /* PokeContact */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				714F13682D06716200691BAD /* Exceptions for "PokeContact" folder in "PokeContact" target */,
-				714F13692D06716200691BAD /* Exceptions for "PokeContact" folder in "Compile Sources" phase from "PokeContact" target */,
 			);
 			path = PokeContact;
 			sourceTree = "<group>";
@@ -66,6 +58,8 @@
 		714F13182D0670E100691BAD = {
 			isa = PBXGroup;
 			children = (
+				714F13DA2D07D3D000691BAD /* Contact+CoreDataClass.swift */,
+				714F13DB2D07D3D000691BAD /* Contact+CoreDataProperties.swift */,
 				714F13222D0670E100691BAD /* Products */,
 				714F13602D06716200691BAD /* PokeContact */,
 			);
@@ -161,6 +155,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				714F13DC2D07D3D000691BAD /* Contact+CoreDataProperties.swift in Sources */,
+				714F13DD2D07D3D000691BAD /* Contact+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
