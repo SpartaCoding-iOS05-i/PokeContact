@@ -39,6 +39,7 @@ final class MainView: UIView {
     
     func configurePokeContacts(contacts: [NSManagedObject]) {
         self.contacts = contacts
+        self.tableView.reloadData()
     }
 }
 
