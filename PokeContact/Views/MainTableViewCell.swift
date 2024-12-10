@@ -45,8 +45,8 @@ final class MainTableViewCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [profileNameStackView, phoneNumberLabel])
         stackView.spacing = 20
         stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        stackView.distribution = .fill
         return stackView
     }()
     
@@ -76,7 +76,7 @@ final class MainTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),
             
-            cellStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            cellStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
             cellStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             cellStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
             cellStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
