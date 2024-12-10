@@ -11,10 +11,11 @@ import CoreData
 final class MainViewController: UIViewController {
     private let mainView = MainView()
     private var container: NSPersistentContainer!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view = mainView
+        bind()
         configureNavigationBar()
     }
     
@@ -27,6 +28,15 @@ final class MainViewController: UIViewController {
     @objc private func addMemberButtonTapped() {
         let addMemberViewController = AddMemberViewController()
         self.navigationController?.pushViewController(addMemberViewController, animated: true)
+    }
+    
+    private func bind() {
+        do {
+            let pokeContacts = try self.container.viewContext.fetch(PokeContactBook.fetchRequest())
+            mainView.configurePokeContacts(contacts: pokeContacts)
+        } catch {
+            print("데이터 읽기 실패")
+        }
     }
 }
 
