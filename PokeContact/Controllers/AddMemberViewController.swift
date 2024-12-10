@@ -10,6 +10,7 @@ import CoreData
 final class AddMemberViewController: UIViewController {
     private let addMemberView = AddMemberView()
     private var container: NSPersistentContainer!
+    private let pokeDataManager = PokeDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
