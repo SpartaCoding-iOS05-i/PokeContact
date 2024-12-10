@@ -92,4 +92,8 @@ final class AddMemberView: UIView {
             phoneNumberTextField.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
+    
+    func configureProfileImage(image: UIImage) {
+        self.profileImageView.image = image
+    }
 }

@@ -30,7 +30,7 @@ final class AddMemberViewController: UIViewController {
             switch result {
             case .success(let image):
                 DispatchQueue.main.async { [weak self] in
-                    self?.addMemberView.profileImageView.image = image
+                    self?.addMemberView.configureProfileImage(image: image)
                 }
             case .failure(let error):
                 print("Error: \(error)")
