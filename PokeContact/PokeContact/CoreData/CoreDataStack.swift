@@ -75,6 +75,20 @@ extension CoreDataStack {
         return result
     }
     
+    func updateData(id: UUID, name: String, phoneNumber: String, profileImage: Data) throws {
+        let fetchRequest = ContactEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        
+        let result = try persistentContainer.viewContext.fetch(fetchRequest)
+        
+        for data in result as [NSManagedObject] {
+            data.setValue(name, forKey: "name")
+            data.setValue(phoneNumber, forKey: "phoneNumber")
+            data.setValue(profileImage, forKey: "profileImage")
+            save()
+        }
+    }
+    
     func deleteData(item: ContactEntity) {
         persistentContainer.viewContext.delete(item)
         save()
