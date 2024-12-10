@@ -30,5 +30,14 @@ final class PokeDataManager {
             print("context svae 실패")
         }
     }
+    
+    func readMembers() -> [NSManagedObject]? {
+        do {
+            return try self.container.viewContext.fetch(PokeContactBook.fetchRequest())
+        } catch {
+            print("데이터 읽기 실패")
+            return nil
+        }
+    }
 }
 
