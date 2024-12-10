@@ -14,8 +14,8 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = mainView
         bind()
+        view = mainView
         configureNavigationBar()
     }
     
@@ -32,6 +32,8 @@ final class MainViewController: UIViewController {
     
     private func bind() {
         do {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            self.container = appDelegate.persistentContainer
             let pokeContacts = try self.container.viewContext.fetch(PokeContactBook.fetchRequest())
             mainView.configurePokeContacts(contacts: pokeContacts)
         } catch {
