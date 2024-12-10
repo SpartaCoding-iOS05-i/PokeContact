@@ -33,6 +33,9 @@ final class PokeDataManager {
     
     func readMembers() -> [NSManagedObject]? {
         do {
+            let sortDescriptor = NSSortDescriptor(key: PokeContactBook.Key.name, ascending: true)
+            PokeContactBook.fetchRequest().sortDescriptors = [sortDescriptor]
+                
             return try self.container.viewContext.fetch(PokeContactBook.fetchRequest())
         } catch {
             print("데이터 읽기 실패")
