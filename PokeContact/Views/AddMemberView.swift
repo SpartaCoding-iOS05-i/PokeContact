@@ -5,7 +5,6 @@
 //  Created by 이명지 on 12/9/24.
 //
 import UIKit
-import Alamofire
 
 final class AddMemberView: UIView {
     private(set) var profileImageView: UIImageView = {
