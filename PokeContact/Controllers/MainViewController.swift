@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import CoreData
 
 final class MainViewController: UIViewController {
+    private let mainView = MainView()
+    private var container: NSPersistentContainer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = MainView()
+        view = mainView
         configureNavigationBar()
     }
     
