@@ -11,8 +11,9 @@ import Then
 
 class MainViewController: UIViewController, MainViewModelDelegate {
     private let tableView = UITableView()
-    private let viewModel: MainViewModel
+    private(set) var viewModel: MainViewModel
 
+    // MARK: - Initialization
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -22,6 +23,7 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -29,7 +31,6 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         bindViewModel()
         viewModel.fetchContacts()
         viewModel.delegate = self
-        testCRuD()
     }
     
     // MARK: - UI Configuration
@@ -40,11 +41,7 @@ class MainViewController: UIViewController, MainViewModelDelegate {
             title: "Add",
             style: .plain,
             target: self,
-            action: #selector(didTapButton))
-    }
-    
-    @objc private func didTapButton() {
-        viewModel.didTapNavigate()
+            action: #selector(didTapAdd))
     }
     
     private func setupTableView() {
@@ -64,9 +61,14 @@ class MainViewController: UIViewController, MainViewModelDelegate {
             self?.tableView.reloadData()
         }
     }
+    
+    // MARK: - Actions
+    @objc private func didTapAdd() {
+        viewModel.didTapNavigate()
+    }
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
+// MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.contacts.count
@@ -82,11 +84,12 @@ extension MainViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let contact = viewModel.contacts[indexPath.row]
-        print("Selected contact: \(contact.fullName ?? "")")
+//        let contact = viewModel.contacts[indexPath.row]
+        viewModel.didSelectContact(at: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -97,13 +100,5 @@ extension MainViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         80
-    }
-}
-
-// MARK: - Test Methods
-extension MainViewController {
-    func testCRuD() {
-        viewModel.addContact(name: "TEST1", phone: "010-1111-2222")
-        viewModel.addContact(name: "TEST2", phone: "010-2222-3333")
     }
 }

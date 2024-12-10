@@ -25,7 +25,7 @@ class AppCoordinator: Coordinator {
         let contactRepository = ContactRepository(context: context)
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            detailCoordinatorFactory: { DetailCoordinator() },
+            detailCoordinatorFactory: { DetailCoordinator(navigationController: self.navigationController) },
             contactRepository: contactRepository
         )
         childCoordinators.append(mainCoordinator)
