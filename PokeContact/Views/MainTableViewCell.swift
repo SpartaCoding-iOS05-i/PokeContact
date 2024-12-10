@@ -34,7 +34,7 @@ final class MainTableViewCell: UITableViewCell {
     
     private lazy var profileNameStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [profileImageView, nameLabel])
-        stackView.spacing = 10
+        stackView.spacing = 20
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
@@ -45,7 +45,7 @@ final class MainTableViewCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [profileNameStackView, phoneNumberLabel])
         stackView.spacing = 20
         stackView.axis = .horizontal
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.distribution = .fill
         return stackView
     }()
