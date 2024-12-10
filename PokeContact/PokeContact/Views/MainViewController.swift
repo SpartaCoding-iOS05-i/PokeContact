@@ -50,7 +50,9 @@ class MainViewController: UIViewController, MainViewModelDelegate {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(ContactCell.self, forCellReuseIdentifier: ContactCell.identifier)
+        tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
+        tableView.tableHeaderView = UIView()
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -71,10 +73,11 @@ extension MainViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.identifier, for: indexPath) as? ContactCell else {
+            return UITableViewCell()
+        }
         let contact = viewModel.contacts[indexPath.row]
-        cell.textLabel?.text = contact.fullName
-        // MODIFY
+        cell.configure(with: contact)
         return cell
     }
 }
@@ -102,6 +105,5 @@ extension MainViewController {
     func testCRuD() {
         viewModel.addContact(name: "TEST1", phone: "010-1111-2222")
         viewModel.addContact(name: "TEST2", phone: "010-2222-3333")
-        viewModel.addContact(name: "TEST3", phone: "010-3333-4444")
     }
 }
