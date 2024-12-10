@@ -36,6 +36,10 @@ final class MainView: UIView {
             tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
+    
+    func configurePokeContacts(contacts: [NSManagedObject]) {
+        self.contacts = contacts
+    }
 }
 
 extension MainView: UITableViewDataSource, UITableViewDelegate {
