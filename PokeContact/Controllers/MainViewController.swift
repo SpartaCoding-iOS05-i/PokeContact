@@ -12,9 +12,13 @@ final class MainViewController: UIViewController {
     private let mainView = MainView()
     private var container: NSPersistentContainer!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bind()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
         view = mainView
         configureNavigationBar()
     }
