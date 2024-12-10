@@ -60,7 +60,12 @@ extension CoreDataStack {
     func readAllData() throws -> [Contact] {
         var result: [Contact] = []
         
-        let contactEntities = try persistentContainer.viewContext.fetch(ContactEntity.fetchRequest())
+        let request: NSFetchRequest<ContactEntity> = ContactEntity.fetchRequest()
+        
+        let nameSort = NSSortDescriptor(key: "name", ascending: true)
+        request.sortDescriptors = [nameSort]
+        
+        let contactEntities = try persistentContainer.viewContext.fetch(request)
         for contactEntity in contactEntities as [NSManagedObject] {
             if let name = contactEntity.value(forKey: "name") as? String,
                let phoneNumber = contactEntity.value(forKey: "phoneNumber") as? String,
