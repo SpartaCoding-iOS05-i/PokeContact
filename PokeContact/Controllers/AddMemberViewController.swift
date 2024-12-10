@@ -15,6 +15,7 @@ final class AddMemberViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = addMemberView
+        addMemberView.delegate = self
         configureNavigationBar()
         configurePokeProfile()
     }
@@ -64,6 +65,12 @@ final class AddMemberViewController: UIViewController {
         } catch {
             print("context svae 실패")
         }
+    }
+}
+
+extension AddMemberViewController: RandomImageButtonDelegate {
+    func changeRandomImage() {
+        self.configurePokeProfile()
     }
 }
 
