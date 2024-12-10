@@ -5,53 +5,30 @@
 //  Created by 이명지 on 12/10/24.
 //
 import UIKit
-import Alamofire
+import CoreData
 
 final class PokeDataManager {
-    func fetchRandomPokemon(completion: @escaping (Result<UIImage, Error>) -> Void) {
-            let url = "https://pokeapi.co/api/v2/pokemon/\(Int.random(in: 1...1000))"
-            
-            AF.request(url).responseDecodable(of: PokeResponse.self) { response in
-                switch response.result {
-                case .success(let pokemon):
-                    if let spriteUrl = pokemon.sprites.frontDefault,
-                       let imageUrl = URL(string: spriteUrl) {
-                        
-                        AF.request(imageUrl).responseData { imageResponse in
-                            switch imageResponse.result {
-                            case .success(let imageData):
-                                if let image = UIImage(data: imageData) {
-                                    completion(.success(image))
-                                } else {
-                                    completion(.failure(NetworkError.invalidImageData))
-                                }
-                            case .failure(let error):
-                                completion(.failure(error))
-                            }
-                        }
-                    } else {
-                        completion(.failure(NetworkError.noImageUrl))
-                    }
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            }
-        }
-}
-
-struct PokeResponse: Decodable {
-    let sprites: Sprites
+    private var container: NSPersistentContainer!
     
-    struct Sprites: Decodable {
-        let frontDefault: String?
+    init() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.container = appDelegate.persistentContainer
+    }
+    
+    func createMember(profileImage: String, name: String, phoneNumber: String) {
+        guard let entity = NSEntityDescription.entity(forEntityName: PokeContactBook.className, in: self.container.viewContext) else { return }
         
-        enum CodingKeys: String, CodingKey {
-            case frontDefault = "front_default"
+        let newPoke = NSManagedObject(entity: entity, insertInto: self.container.viewContext)
+        newPoke.setValue(profileImage, forKey: PokeContactBook.Key.profileImage)
+        newPoke.setValue(name, forKey: PokeContactBook.Key.name)
+        newPoke.setValue(phoneNumber, forKey: PokeContactBook.Key.phoneNumber)
+        
+        do {
+            try self.container.viewContext.save()
+            print("context save 성공")
+        } catch {
+            print("context svae 실패")
         }
     }
 }
 
-enum NetworkError: Error {
-    case noImageUrl
-    case invalidImageData
-}
