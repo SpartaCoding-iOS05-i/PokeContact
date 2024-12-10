@@ -8,7 +8,7 @@ import UIKit
 import Alamofire
 
 final class AddMemberView: UIView {
-    private let profileImageView: UIImageView = {
+    private(set) var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 5
         imageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -26,7 +26,7 @@ final class AddMemberView: UIView {
         return button
     }()
     
-    private let nameTextField: UITextField = {
+    private(set) var nameTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
@@ -37,7 +37,7 @@ final class AddMemberView: UIView {
         return textField
     }()
     
-    private let phoneNumberTextField: UITextField = {
+    private(set) var phoneNumberTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.autocorrectionType = .no
