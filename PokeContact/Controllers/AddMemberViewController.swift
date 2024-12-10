@@ -8,8 +8,8 @@ import UIKit
 import CoreData
 
 final class AddMemberViewController: UIViewController {
-    let addMemberView = AddMemberView()
-    var container: NSPersistentContainer!
+    private let addMemberView = AddMemberView()
+    private var container: NSPersistentContainer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
