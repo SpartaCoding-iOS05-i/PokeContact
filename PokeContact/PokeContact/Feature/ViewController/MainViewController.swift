@@ -102,6 +102,12 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let newVC = AddContactViewController()
+        newVC.configureData(with: contacts[indexPath.row])
+        navigationController?.pushViewController(newVC, animated: true)
+    }
 }
 
 extension MainViewController: UITableViewDataSource {

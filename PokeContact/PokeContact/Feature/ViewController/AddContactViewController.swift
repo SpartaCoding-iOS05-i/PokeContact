@@ -53,7 +53,9 @@ final class AddContactViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        title = "연락처 추가"
+        if title == nil {
+            title = "연락처 추가"
+        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .done, target: self, action: #selector(didTapAddContactButton))
     }
     
@@ -125,6 +127,15 @@ private extension AddContactViewController {
         )
         
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension AddContactViewController {
+    func configureData(with contact: Contact) {
+        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        nameTextField.text = contact.name
+        phoneNumberTextField.text = contact.phoneNumber
+        title = contact.name
     }
 }
 
