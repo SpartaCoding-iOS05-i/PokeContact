@@ -10,3 +10,15 @@ import Alamofire
 final class PokeDataManager {
     
 }
+
+struct PokeResponse: Decodable {
+    let sprites: Sprites
+    
+    struct Sprites: Decodable {
+        let frontDefault: String?
+        
+        enum CodingKeys: String, CodingKey {
+            case frontDefault = "front_default"
+        }
+    }
+}
