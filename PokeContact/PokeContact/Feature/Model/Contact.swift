@@ -7,40 +7,35 @@
 import Foundation
 
 struct Contact {
-    let profileImageURL: URL?
     let name: String
     let phoneNumber: String
-    
+    let profileImage: Data?
+
     static let dummies = [
         Contact(
-            profileImageURL: nil,
             name: "contactName",
-            phoneNumber: "010-1234-5678"
+            phoneNumber: "010-1234-5678",
+            profileImage: nil
         ),
         Contact(
-            profileImageURL: nil,
             name: "contactName",
-            phoneNumber: "010-1234-5678"
+            phoneNumber: "010-1234-5678",
+            profileImage: nil
         ),
         Contact(
-            profileImageURL: nil,
             name: "contactName",
-            phoneNumber: "010-1234-5678"
+            phoneNumber: "010-1234-5678",
+            profileImage: nil
         ),
         Contact(
-            profileImageURL: nil,
             name: "contactName",
-            phoneNumber: "010-1234-5678"
+            phoneNumber: "010-1234-5678",
+            profileImage: nil
         ),
         Contact(
-            profileImageURL: nil,
             name: "contactName",
-            phoneNumber: "010-1234-5678"
-        ),
-        Contact(
-            profileImageURL: nil,
-            name: "contactName",
-            phoneNumber: "010-1234-5678"
+            phoneNumber: "010-1234-5678",
+            profileImage: nil
         )
     ]
 }
