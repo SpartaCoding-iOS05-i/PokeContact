@@ -36,7 +36,6 @@ final class AddMemberViewController: UIViewController {
     }
     
     private func configureNavigationBar(title: String) {
-        self.addMemberView?.backgroundColor = .white
         self.navigationItem.title = title
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
     }
