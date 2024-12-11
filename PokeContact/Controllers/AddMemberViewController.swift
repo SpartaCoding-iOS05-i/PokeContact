@@ -59,13 +59,34 @@ final class AddMemberViewController: UIViewController {
         let name = addMemberView?.nameTextField.text ?? ""
         let phoneNumber = addMemberView?.phoneNumberTextField.text ?? ""
         
+        guard !name.isEmpty else {
+            showAlert(title: "이름을 입력해주세요")
+            return
+        }
+        guard !phoneNumber.isEmpty else {
+            showAlert(title: "전화번호를 입력해주세요")
+            return
+        }
+        guard phoneNumber.count == 13 else {
+            showAlert(title: "올바른 전화번호를 입력해주세요")
+            return
+        }
+        
         if let oldName = self.oldName {
             pokeDataManager.updateMember(currentName: oldName, updateProfileImage: image, updateName: name, updatePhoneNumber: phoneNumber)
         } else {
             pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
         }
-        
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    private func showAlert(title: String) {
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        let success  = UIAlertAction(title: "확인", style: .default)
+        
+        alert.addAction(success)
+
+        present(alert, animated: true, completion: nil)
     }
 }
 
