@@ -20,7 +20,9 @@ final class AddMemberViewController: UIViewController {
     
     init(profileImage: String, name: String, phoneNumber: String) {
         self.oldName = name
-        self.addMemberView = AddMemberView(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+        self.addMemberView = AddMemberView(profileImage: profileImage,
+                                           name: name,
+                                           phoneNumber: phoneNumber)
         super.init(nibName: nil, bundle: nil)
         self.configureNavigationBar(title: name)
     }
