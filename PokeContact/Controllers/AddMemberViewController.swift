@@ -14,11 +14,13 @@ final class AddMemberViewController: UIViewController {
     init() {
         self.addMemberView = AddMemberView()
         super.init(nibName: nil, bundle: nil)
+        self.configureNavigationBar(title: "연락처 추가")
     }
     
     init(profileImage: String, name: String, phoneNumber: String) {
         self.addMemberView = AddMemberView(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
         super.init(nibName: nil, bundle: nil)
+        self.configureNavigationBar(title: name)
     }
     
     required init?(coder: NSCoder) {
@@ -29,12 +31,11 @@ final class AddMemberViewController: UIViewController {
         super.viewDidLoad()
         view = addMemberView
         addMemberView?.delegate = self
-        configureNavigationBar()
     }
     
-    private func configureNavigationBar() {
-        self.view.backgroundColor = .white
-        self.navigationItem.title = "연락처 추가"
+    private func configureNavigationBar(title: String) {
+        self.addMemberView?.backgroundColor = .white
+        self.navigationItem.title = title
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
     }
     
