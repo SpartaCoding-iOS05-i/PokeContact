@@ -127,7 +127,7 @@ extension AddMemberView: UITextFieldDelegate {
             textField.text = formatNumber(numbers)
             return false
         }
-        guard numbers.count == 11 else { return false }
+        guard numbers.count <= 11 else { return false }
         textField.text = formatNumber(numbers)
         
         return false
