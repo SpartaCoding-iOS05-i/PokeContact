@@ -10,6 +10,7 @@ final class AddMemberViewController: UIViewController {
     private var addMemberView: AddMemberView?
     private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
+    private var oldName: String?
     
     init() {
         self.addMemberView = AddMemberView()
@@ -18,6 +19,7 @@ final class AddMemberViewController: UIViewController {
     }
     
     init(profileImage: String, name: String, phoneNumber: String) {
+        self.oldName = name
         self.addMemberView = AddMemberView(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
         super.init(nibName: nil, bundle: nil)
         self.configureNavigationBar(title: name)
@@ -56,7 +58,13 @@ final class AddMemberViewController: UIViewController {
         let image = addMemberView?.profileImageView.image?.toString() ?? ""
         let name = addMemberView?.nameTextField.text ?? ""
         let phoneNumber = addMemberView?.phoneNumberTextField.text ?? ""
-        pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
+        
+        if let oldName = self.oldName {
+            pokeDataManager.updateMember(currentName: oldName, updateProfileImage: image, updateName: name, updatePhoneNumber: phoneNumber)
+        } else {
+            pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
+        }
+        
         self.navigationController?.popViewController(animated: true)
     }
 }
