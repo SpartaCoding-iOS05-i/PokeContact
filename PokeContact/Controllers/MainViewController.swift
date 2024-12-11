@@ -46,6 +46,10 @@ extension MainViewController: PokeTableViewCellDelegate {
         let addMemberViewController = AddMemberViewController(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
         self.navigationController?.pushViewController(addMemberViewController, animated: true)
     }
+    
+    func deleteCell(name: String) {
+        pokeDataManager.deleteMember(name: name)
+    }
 }
 
 @available(iOS 17.0, *)
