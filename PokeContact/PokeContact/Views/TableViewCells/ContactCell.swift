@@ -13,7 +13,8 @@ class ContactCell: UITableViewCell {
     static let identifier = "ContactCell"
     
     private let profileImage = RoundImageView().then {
-        $0.image = UIImage(systemName: "star")
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
     }
     
     private let nameLabel = UILabel().then {
@@ -64,5 +65,16 @@ class ContactCell: UITableViewCell {
     func configure(with contact: Contact) {
         nameLabel.text = contact.fullName
         phoneLabel.text = contact.phoneNumber
+        
+        if let imageURL = contact.profileImage {
+            ImageLoader.loadImage(from: imageURL) { [weak self] image in
+                guard let self = self else { return }
+                if let image = image {
+                    self.profileImage.image = image
+                } else {
+                    print("ContactCell: Failed to load image for URL: \(imageURL)")
+                }
+            }
+        }
     }
 }

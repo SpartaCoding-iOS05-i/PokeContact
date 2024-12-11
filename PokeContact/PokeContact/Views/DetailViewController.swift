@@ -16,8 +16,13 @@ enum ContactMode {
 
 class DetailViewController: UIViewController {
     private let viewModel: DetailViewModel
+    private var mode: ContactMode
+    private var currentImageURL: String = ""
     
-    private let profileImage = RoundImageView()
+    private let profileImage = RoundImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
     
     private let generateButton = UIButton().then {
         $0.setTitle("Generate Avatar", for: .normal)
@@ -37,7 +42,6 @@ class DetailViewController: UIViewController {
         $0.keyboardType = .phonePad
     }
     
-    private var mode: ContactMode
     var onSave: ((Contact) -> Void)?
     
     // MARK: - Initialization
@@ -99,7 +103,7 @@ class DetailViewController: UIViewController {
             make.top.equalTo(nameTextField.snp.bottom).offset(15)
         }
         
-        generateButton.addTarget(self, action: #selector(didTapGenerate), for: .touchUpInside)
+        generateButton.addTarget(self, action: #selector(didTapGenerateAvatar), for: .touchUpInside)
     }
     
     // MARK: - Mode Configuration
@@ -108,41 +112,52 @@ class DetailViewController: UIViewController {
         switch mode {
         case .add:
             self.title = "Add Contact"
+            
+            self.didTapGenerateAvatar()
+            
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Save",
                 style: .plain,
                 target: self,
-                action: #selector(didTapCreate))
+                action: #selector(didTapCreate)
+            )
         case .edit(let contact):
-            self.title = "Edit Contact"
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Save",
-                style: .plain,
-                target: self,
-                action: #selector(didTapUpdate))
-            profileImage.image = UIImage(named: "Star")
+            self.title = contact.fullName
+            
+            if let profileImageURL = contact.profileImage {
+                currentImageURL = profileImageURL
+                loadProfileImage(from: profileImageURL)
+            } else {
+                print("DetailViewController: No existing profile image URL.")
+            }
+            
             nameTextField.text = contact.fullName
             phoneTextField.text = contact.phoneNumber
+            
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Save",
+                style: .plain,
+                target: self,
+                action: #selector(didTapUpdate)
+            )
         }
     }
     
     // MARK: - Actions
-    @objc private func didTapGenerate() {
-        let size = CGSize(width: 200, height: 200)
-        let renderer = UIGraphicsImageRenderer(size: size)
-        let randomColor = UIColor(
-            red: CGFloat.random(in: 0...1),
-            green: CGFloat.random(in: 0...1),
-            blue: CGFloat.random(in: 0...1),
-            alpha: 1
-        )
-
-        let image = renderer.image { context in
-            randomColor.setFill()
-            context.fill(CGRect(origin: .zero, size: size))
+    @objc private func didTapGenerateAvatar() {
+        print("DetailViewController: didTapGenerate called")
+        
+        Task {
+            do {
+                let spriteURL = try await viewModel.fetchRandomImage()
+                print("DetailViewController: Fetched Sprite URL: \(spriteURL)")
+                self.updateProfileImage(with: spriteURL)
+                self.currentImageURL = spriteURL
+            } catch {
+                print("DetailViewController: Failed to fetch Sprite URL: \(error)")
+                self.showAlert(message: "Failed to fetch Pokémon image. Please try again.")
+            }
         }
-
-        profileImage.image = image
     }
     
     @objc private func didTapCreate() {
@@ -153,52 +168,80 @@ class DetailViewController: UIViewController {
             return
         }
 
-        let contact = Contact(context: viewModel.repository.context)
-        contact.fullName = name
-        contact.phoneNumber = phone
+        let imageURL = currentImageURL
 
         do {
-            try viewModel.repository.context.save()
-            print("DetailViewController: Contact saved in context.")
+            try viewModel.addContact(name: name, phone: phone, imageURL: imageURL)
+            print("DetailViewController: Contact added successfully.")
         } catch {
-            print("DetailViewController: Failed to save context. Error: \(error)")
-            showAlert(message: "Failed to save contact. Please try again.")
-            return
+            print("DetailViewController: Failed to add contact: \(error.localizedDescription)")
+            showAlert(message: "Failed to add contact. Please try again.")
         }
-
-        onSave?(contact)
-        navigationController?.popViewController(animated: true)
     }
     
     @objc private func didTapUpdate() {
-        print("didTapUpdate called")
+        print("DetailViewController: didTapUpdate called.")
+        
         guard let name = nameTextField.text, !name.isEmpty,
               let phone = phoneTextField.text, !phone.isEmpty else {
             showAlert(message: "All fields are required.")
             return
         }
         
-        if case .edit(let contact) = mode {
-            contact.fullName = name
-            contact.phoneNumber = phone
-            onSave?(contact)
-            print("Saved")
-        }
+        guard case .edit(let contact) = mode else { return }
         
-        navigationController?.popViewController(animated: true)
+        let imageURL = currentImageURL
+        
+        viewModel.updateContact(contact, withName: name, phone: phone, imageURL: imageURL)
     }
 
+
     // MARK: - Helpers
-        private func showAlert(message: String) {
-            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    private func updateProfileImage(with url: String) {
+        guard let imageURL = URL(string: url) else {
+            print("DetailViewController: Invalid URL: \(url)")
+            showAlert(message: "Failed to load Pokémon image. Invalid URL.")
+            return
         }
+        
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: imageURL),
+               let image = UIImage(data: data) {
+                DispatchQueue.main.async { [weak self] in
+                    self?.profileImage.image = image
+                    self?.currentImageURL = url // 실시간으로 URL 업데이트
+                    print("DetailViewController: Profile image updated.")
+                }
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    print("DetailViewController: Failed to load image data.")
+                    self?.showAlert(message: "Failed to load Pokémon image.")
+                }
+            }
+        }
+    }
+
+    private func loadProfileImage(from url: String) {
+        ImageLoader.loadImage(from: url) { [weak self] image in
+            guard let self = self else { return }
+            if let image = image {
+                self.profileImage.image = image
+            } else {
+                print("DetailViewController: Failed to load image.")
+            }
+        }
+    }
 }
 
 extension DetailViewController: DetailViewModelDelegate {
     func didSaveContact() {
-        print("Contact saved successfully.")
+        print("DetailViewController: Contact saved successfully..")
     }
     
     func didFailWithError(_ error: Error) {
