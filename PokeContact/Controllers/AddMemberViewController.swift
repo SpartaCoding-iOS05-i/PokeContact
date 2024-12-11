@@ -76,9 +76,14 @@ final class AddMemberViewController: UIViewController {
     
     private func savePokeContact(_ input: UserInput) {
         if let oldName = self.oldName {
-            pokeDataManager.updateMember(currentName: oldName, updateProfileImage: input.profileImage, updateName: input.name, updatePhoneNumber: input.phoneNumber)
+            pokeDataManager.updateMember(currentName: oldName,
+                                         updateProfileImage: input.profileImage,
+                                         updateName: input.name,
+                                         updatePhoneNumber: input.phoneNumber)
         } else {
-            pokeDataManager.createMember(profileImage: input.profileImage, name: input.name, phoneNumber: input.phoneNumber)
+            pokeDataManager.createMember(profileImage: input.profileImage,
+                                         name: input.name,
+                                         phoneNumber: input.phoneNumber)
         }
     }
     
