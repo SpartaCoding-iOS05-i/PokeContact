@@ -37,7 +37,7 @@ final class AddMemberView: UIView {
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
         textField.autocapitalizationType = .none
-        textField.placeholder = "닉네임"
+        textField.placeholder = "이름"
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -120,16 +120,23 @@ final class AddMemberView: UIView {
 
 extension AddMemberView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let fullString = (textField.text ?? "") + string
-        let numbers = fullString.filter { $0.isNumber }
+        guard let text = textField.text else { return false }
         
         if string.isEmpty {
-            textField.text = formatNumber(numbers)
+            if text.suffix(2).first == "-" {
+                textField.text = String(text.dropLast(2))
+            } else {
+                textField.text = String(text.dropLast(1))
+            }
             return false
         }
-        guard numbers.count <= 11 else { return false }
-        textField.text = formatNumber(numbers)
         
+        let newString = text + string
+        let numbers = newString.filter { $0.isNumber }
+        
+        guard numbers.count <= 11 else { return false }
+        
+        textField.text = formatNumber(numbers)
         return false
     }
     
