@@ -28,6 +28,10 @@ struct UserInput {
     let phoneNumber: String
 }
 
+protocol InputValidatorProtocol: AnyObject {
+    func validate(_ input: UserInput) throws
+}
+
 final class InputValidator {
     
 }
