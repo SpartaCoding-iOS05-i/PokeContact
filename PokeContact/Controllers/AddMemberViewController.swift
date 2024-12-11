@@ -60,9 +60,9 @@ final class AddMemberViewController: UIViewController {
     @objc private func completeButtonTapped() {
         let inputValidator = InputValidator()
         
-        let userInput = UserInput(name: addMemberView?.profileImageView.image?.toString() ?? "",
-                                  phoneNumber: addMemberView?.nameTextField.text ?? "",
-                                  profileImage: addMemberView?.phoneNumberTextField.text ?? "")
+        let userInput = UserInput(name: addMemberView?.nameTextField.text ?? "",
+                                  phoneNumber: addMemberView?.phoneNumberTextField.text ?? "",
+                                  profileImage: addMemberView?.profileImageView.image?.toString() ?? "")
         do {
             try inputValidator.validate(userInput)
             savePokeContact(userInput)
