@@ -50,6 +50,7 @@ final class AddMemberView: UIView {
         textField.autocapitalizationType = .none
         textField.placeholder = "전화번호"
         textField.clearButtonMode = .whileEditing
+        textField.keyboardType = .numberPad
         return textField
     }()
     
