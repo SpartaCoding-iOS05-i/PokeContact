@@ -7,9 +7,14 @@
 import UIKit
 import CoreData
 
+protocol PokeTableViewCellDelegate: AnyObject {
+    func cellDidTapped(profileImage: String, name: String, phoneNumber: String)
+}
+
 final class MainView: UIView {
     private let tableView = UITableView()
     private var contacts = [NSManagedObject]()
+    weak var delegate: PokeTableViewCellDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -60,5 +65,16 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedContact = contacts[indexPath.row]
+        let image = selectedContact.value(forKey: PokeContactBook.Key.profileImage) as? String ?? ""
+        let name = selectedContact.value(forKey: PokeContactBook.Key.name) as? String ?? ""
+        let phoneNumber = selectedContact.value(forKey: PokeContactBook.Key.phoneNumber) as? String ?? ""
+        
+        delegate?.cellDidTapped(profileImage: image, name: name, phoneNumber: phoneNumber)
     }
 }
