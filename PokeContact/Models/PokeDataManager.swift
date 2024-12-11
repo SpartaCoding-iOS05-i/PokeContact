@@ -62,7 +62,24 @@ final class PokeDataManager {
         } catch {
             print("데이터 수정 실패")
         }
-
+    }
+    
+    func deleteMember(name: String) {
+        let fetchRequest = PokeContactBook.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        
+        do {
+            let result = try self.container.viewContext.fetch(fetchRequest)
+            
+            for data in result as [NSManagedObject] {
+                self.container.viewContext.delete(data)
+            }
+            try self.container.viewContext.save()
+            print("데이터 삭제 완료")
+            
+        } catch {
+            print("데이터 삭제 실패: \(error)")
+        }
     }
 }
 
