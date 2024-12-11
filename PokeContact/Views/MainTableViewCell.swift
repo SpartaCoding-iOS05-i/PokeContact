@@ -20,7 +20,7 @@ final class MainTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
         label.textColor = .gray
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -28,7 +28,7 @@ final class MainTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 15)
         label.textColor = .gray
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -43,10 +43,10 @@ final class MainTableViewCell: UITableViewCell {
     
     private lazy var cellStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [profileNameStackView, phoneNumberLabel])
-        stackView.spacing = 20
+        stackView.spacing = 40
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fill
+        stackView.distribution = .fillEqually
         return stackView
     }()
     
@@ -76,10 +76,9 @@ final class MainTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),
             
-            cellStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
-            cellStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            cellStackView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
             cellStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-            cellStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+            cellStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
         ])
     }
     
