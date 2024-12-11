@@ -32,6 +32,18 @@ protocol InputValidatorProtocol: AnyObject {
     func validate(_ input: UserInput) throws
 }
 
-final class InputValidator {
+final class InputValidator: InputValidatorProtocol {
+    func validate(_ input: UserInput) throws {
+        try validateName(input.name)
+        try validatePhoneNumber(input.phoneNumber)
+    }
     
+    private func validateName(_ name: String) throws {
+        if name.isEmpty { throw ValidationError.emptyName }
+    }
+    
+    private func validatePhoneNumber(_ phoneNumber: String) throws {
+        if phoneNumber.isEmpty { throw ValidationError.emptyPhoneNumber }
+        if phoneNumber.count != 13 { throw ValidationError.invalidPhoneNumber }
+    }
 }
