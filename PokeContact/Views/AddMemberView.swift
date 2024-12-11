@@ -72,6 +72,14 @@ final class AddMemberView: UIView {
         configureUI()
     }
     
+    init(profileImage: String, name: String, phoneNumber: String) {
+        super.init(frame: .zero)
+        self.profileImageView.image = profileImage.toUIImage()
+        self.nameTextField.text = name
+        self.phoneNumberTextField.text = phoneNumber
+        configureUI()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
