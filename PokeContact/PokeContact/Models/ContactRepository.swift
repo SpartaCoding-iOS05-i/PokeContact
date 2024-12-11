@@ -19,7 +19,16 @@ class ContactRepository {
     func fetchContacts() throws -> [Contact] {
         let fetchRequest: NSFetchRequest<Contact> = Contact.fetchRequest()
         fetchRequest.includesPendingChanges = false
-        return try context.fetch(fetchRequest)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "fullName", ascending: true)]
+        
+        do {
+            let contacts = try context.fetch(fetchRequest)
+            print("ContactRepository: Fetched \(contacts.count) contacts.")
+            return contacts
+        } catch {
+            print("ContactRepository: Failed to fetch contacts: \(error)")
+            throw error
+        }
     }
     
     func fetchRandomImageURL() async throws -> String {
