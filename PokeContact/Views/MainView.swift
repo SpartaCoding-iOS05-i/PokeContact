@@ -9,6 +9,7 @@ import CoreData
 
 protocol PokeTableViewCellDelegate: AnyObject {
     func cellDidTapped(profileImage: String, name: String, phoneNumber: String)
+    func deleteCell(name: String)
 }
 
 final class MainView: UIView {
@@ -76,5 +77,22 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
         let phoneNumber = selectedContact.value(forKey: PokeContactBook.Key.phoneNumber) as? String ?? ""
         
         delegate?.cellDidTapped(profileImage: image, name: name, phoneNumber: phoneNumber)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let name = contacts[indexPath.row].value(forKey: PokeContactBook.Key.name) as? String ?? ""
+            delegate?.deleteCell(name: name)
+            contacts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
     }
 }
