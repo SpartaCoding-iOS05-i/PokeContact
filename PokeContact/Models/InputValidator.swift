@@ -23,6 +23,11 @@ enum ValidationError: LocalizedError {
     }
 }
 
+struct UserInput {
+    let name: String
+    let phoneNumber: String
+}
+
 final class InputValidator {
     
 }
