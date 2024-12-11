@@ -42,5 +42,27 @@ final class PokeDataManager {
             return nil
         }
     }
+    
+    func updateMember(currentName: String, updateProfileImage: String, updateName: String, updatePhoneNumber: String) {
+        let fetchRequest = PokeContactBook.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "name == %@", currentName)
+        
+        do {
+            let result = try self.container.viewContext.fetch(fetchRequest)
+            
+            for data in result as [NSManagedObject] {
+                data.setValue(updateProfileImage, forKey: PokeContactBook.Key.profileImage)
+                data.setValue(updateName, forKey: PokeContactBook.Key.name)
+                data.setValue(updatePhoneNumber, forKey: PokeContactBook.Key.phoneNumber)
+                
+                try self.container.viewContext.save()
+                print("데이터 수정 완료")
+            }
+            
+        } catch {
+            print("데이터 수정 실패")
+        }
+
+    }
 }
 
