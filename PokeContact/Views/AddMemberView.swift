@@ -88,6 +88,7 @@ final class AddMemberView: UIView {
     private func configureUI() {
         self.backgroundColor = .white
         self.addSubview(stackView)
+        self.phoneNumberTextField.delegate = self
         self.randomImageButton.addTarget(self, action: #selector(randomImageButtonTapped), for: .touchUpInside)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,5 +115,36 @@ final class AddMemberView: UIView {
     
     @objc private func randomImageButtonTapped() {
         delegate?.changeRandomImage()
+    }
+}
+
+extension AddMemberView: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let fullString = (textField.text ?? "") + string
+        let numbers = fullString.filter { $0.isNumber }
+        
+        if string.isEmpty {
+            textField.text = formatNumber(numbers)
+            return false
+        }
+        guard numbers.count == 11 else { return false }
+        textField.text = formatNumber(numbers)
+        
+        return false
+    }
+    
+    private func formatNumber(_ numbers: String) -> String {
+        let numbersOnly = numbers.filter { $0.isNumber }
+        
+        if numbersOnly.count <= 3 {
+            return String(numbersOnly)
+        } else if numbersOnly.count <= 7 {
+            let index3 = numbersOnly.index(numbersOnly.startIndex, offsetBy: 3)
+            return String(numbersOnly[..<index3]) + "-" + String(numbersOnly[index3...])
+        } else {
+            let index3 = numbersOnly.index(numbersOnly.startIndex, offsetBy: 3)
+            let index7 = numbersOnly.index(numbersOnly.startIndex, offsetBy: 7)
+            return String(numbersOnly[..<index3]) + "-" + String(numbersOnly[index3..<index7]) + "-" + String(numbersOnly[index7...])
+        }
     }
 }
