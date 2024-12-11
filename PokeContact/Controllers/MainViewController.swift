@@ -18,6 +18,7 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mainView.delegate = self
         view = mainView
         configureNavigationBar()
     }
@@ -37,6 +38,11 @@ final class MainViewController: UIViewController {
     private func bind() {
         guard let contacts = pokeDataManager.readMembers() else { return }
         self.mainView.configurePokeContacts(contacts: contacts) 
+    }
+}
+
+extension MainViewController: PokeTableViewCellDelegate {
+    func cellDidTapped(profileImage: String, name: String, phoneNumber: String) {
     }
 }
 
