@@ -7,14 +7,28 @@
 import UIKit
 
 final class AddMemberViewController: UIViewController {
-    private let addMemberView = AddMemberView()
+    private var addMemberView: AddMemberView?
     private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
+    
+    init() {
+        self.addMemberView = AddMemberView()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(profileImage: String, name: String, phoneNumber: String) {
+        self.addMemberView = AddMemberView(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view = addMemberView
-        addMemberView.delegate = self
+        addMemberView?.delegate = self
         configureNavigationBar()
     }
     
@@ -29,7 +43,7 @@ final class AddMemberViewController: UIViewController {
             switch result {
             case .success(let image):
                 DispatchQueue.main.async { [weak self] in
-                    self?.addMemberView.configureProfileImage(image: image)
+                    self?.addMemberView?.configureProfileImage(image: image)
                 }
             case .failure(let error):
                 print("Error: \(error)")
@@ -38,9 +52,9 @@ final class AddMemberViewController: UIViewController {
     }
     
     @objc private func completeButtonTapped() {
-        let image = addMemberView.profileImageView.image?.toString() ?? ""
-        let name = addMemberView.nameTextField.text ?? ""
-        let phoneNumber = addMemberView.phoneNumberTextField.text ?? ""
+        let image = addMemberView?.profileImageView.image?.toString() ?? ""
+        let name = addMemberView?.nameTextField.text ?? ""
+        let phoneNumber = addMemberView?.phoneNumberTextField.text ?? ""
         pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
         self.navigationController?.popViewController(animated: true)
     }
