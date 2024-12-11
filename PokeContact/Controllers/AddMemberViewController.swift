@@ -46,7 +46,7 @@ final class AddMemberViewController: UIViewController {
             case .success(let image):
                 self?.updateProfileImage(image)
             case .failure(let error):
-                print("Error: \(error)")
+                self?.showAlert(title: "프로필 이미지 로드 실패")
             }
         }
     }
