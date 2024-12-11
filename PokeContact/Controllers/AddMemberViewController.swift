@@ -58,29 +58,28 @@ final class AddMemberViewController: UIViewController {
     }
     
     @objc private func completeButtonTapped() {
-        let image = addMemberView?.profileImageView.image?.toString() ?? ""
-        let name = addMemberView?.nameTextField.text ?? ""
-        let phoneNumber = addMemberView?.phoneNumberTextField.text ?? ""
+        let inputValidator = InputValidator()
         
-        guard !name.isEmpty else {
-            showAlert(title: "이름을 입력해주세요")
-            return
+        let userInput = UserInput(name: addMemberView?.profileImageView.image?.toString() ?? "",
+                                  phoneNumber: addMemberView?.nameTextField.text ?? "",
+                                  profileImage: addMemberView?.phoneNumberTextField.text ?? "")
+        do {
+            try inputValidator.validate(userInput)
+            savePokeContact(userInput)
+            self.navigationController?.popViewController(animated: true)
+        } catch let error as ValidationError {
+            showAlert(title: error.errorMessage)
+        } catch {
+            showAlert(title: "오류 발생")
         }
-        guard !phoneNumber.isEmpty else {
-            showAlert(title: "전화번호를 입력해주세요")
-            return
-        }
-        guard phoneNumber.count == 13 else {
-            showAlert(title: "올바른 전화번호를 입력해주세요")
-            return
-        }
-        
+    }
+    
+    private func savePokeContact(_ input: UserInput) {
         if let oldName = self.oldName {
-            pokeDataManager.updateMember(currentName: oldName, updateProfileImage: image, updateName: name, updatePhoneNumber: phoneNumber)
+            pokeDataManager.updateMember(currentName: oldName, updateProfileImage: input.profileImage, updateName: input.name, updatePhoneNumber: input.phoneNumber)
         } else {
-            pokeDataManager.createMember(profileImage: image, name: name, phoneNumber: phoneNumber)
+            pokeDataManager.createMember(profileImage: input.profileImage, name: input.name, phoneNumber: input.phoneNumber)
         }
-        self.navigationController?.popViewController(animated: true)
     }
     
     private func showAlert(title: String) {
