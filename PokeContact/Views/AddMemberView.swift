@@ -98,7 +98,7 @@ final class AddMemberView: UIView {
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
             
-            profileImageView.widthAnchor.constraint(equalToConstant: 200),
+            profileImageView.widthAnchor.constraint(equalToConstant: 150),
             profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor),
             
             nameTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor),
