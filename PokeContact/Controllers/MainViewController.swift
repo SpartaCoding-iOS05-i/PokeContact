@@ -30,9 +30,9 @@ final class MainViewController: UIViewController {
     }
     
     @objc private func addMemberButtonTapped() {
-        let addMemberViewController = AddMemberViewController()
-        addMemberViewController.fetchRandomImage()
-        self.navigationController?.pushViewController(addMemberViewController, animated: true)
+        let contactViewController = ContactViewController()
+        contactViewController.fetchRandomImage()
+        self.navigationController?.pushViewController(contactViewController, animated: true)
     }
     
     private func bind() {
@@ -43,8 +43,8 @@ final class MainViewController: UIViewController {
 
 extension MainViewController: PokeTableViewCellDelegate {
     func cellDidTapped(profileImage: String, name: String, phoneNumber: String) {
-        let addMemberViewController = AddMemberViewController(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
-        self.navigationController?.pushViewController(addMemberViewController, animated: true)
+        let contactViewController = ContactViewController(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+        self.navigationController?.pushViewController(contactViewController, animated: true)
     }
     
     func deleteCell(name: String) {

@@ -6,7 +6,7 @@
 //
 import UIKit
 
-final class AddMemberViewController: UIViewController {
+final class ContactViewController: UIViewController {
     private var addMemberView: AddMemberView?
     private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
@@ -99,7 +99,7 @@ final class AddMemberViewController: UIViewController {
     }
 }
 
-extension AddMemberViewController: RandomImageButtonDelegate {
+extension ContactViewController: RandomImageButtonDelegate {
     func changeRandomImage() {
         self.fetchRandomImage()
     }
