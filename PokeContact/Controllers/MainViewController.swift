@@ -43,6 +43,8 @@ final class MainViewController: UIViewController {
 
 extension MainViewController: PokeTableViewCellDelegate {
     func cellDidTapped(profileImage: String, name: String, phoneNumber: String) {
+        let addMemberViewController = AddMemberViewController(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+        self.navigationController?.pushViewController(addMemberViewController, animated: true)
     }
 }
 
