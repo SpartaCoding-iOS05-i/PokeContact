@@ -10,7 +10,7 @@ protocol RandomImageButtonDelegate: AnyObject {
     func changeRandomImage()
 }
 
-final class AddMemberView: UIView {
+final class ContactView: UIView {
     weak var delegate: RandomImageButtonDelegate?
     
     private(set) var profileImageView: UIImageView = {
@@ -118,7 +118,7 @@ final class AddMemberView: UIView {
     }
 }
 
-extension AddMemberView: UITextFieldDelegate {
+extension ContactView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return false }
         

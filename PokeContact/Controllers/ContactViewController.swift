@@ -7,20 +7,20 @@
 import UIKit
 
 final class ContactViewController: UIViewController {
-    private var addMemberView: AddMemberView?
+    private var contactView: ContactView?
     private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
     private var oldName: String?
     
     init() {
-        self.addMemberView = AddMemberView()
+        self.contactView = ContactView()
         super.init(nibName: nil, bundle: nil)
         self.configureNavigationBar(title: "연락처 추가")
     }
     
     init(profileImage: String, name: String, phoneNumber: String) {
         self.oldName = name
-        self.addMemberView = AddMemberView(profileImage: profileImage,
+        self.contactView = ContactView(profileImage: profileImage,
                                            name: name,
                                            phoneNumber: phoneNumber)
         super.init(nibName: nil, bundle: nil)
@@ -33,8 +33,8 @@ final class ContactViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view = addMemberView
-        addMemberView?.delegate = self
+        view = contactView
+        contactView?.delegate = self
     }
     
     private func configureNavigationBar(title: String) {
@@ -55,16 +55,16 @@ final class ContactViewController: UIViewController {
     
     private func updateProfileImage(_ image: UIImage) {
         DispatchQueue.main.async { [weak self] in
-            self?.addMemberView?.configureProfileImage(image: image)
+            self?.contactView?.configureProfileImage(image: image)
         }
     }
     
     @objc private func completeButtonTapped() {
         let inputValidator = InputValidator()
         
-        let userInput = UserInput(name: addMemberView?.nameTextField.text ?? "",
-                                  phoneNumber: addMemberView?.phoneNumberTextField.text ?? "",
-                                  profileImage: addMemberView?.profileImageView.image?.toString() ?? "")
+        let userInput = UserInput(name: contactView?.nameTextField.text ?? "",
+                                  phoneNumber: contactView?.phoneNumberTextField.text ?? "",
+                                  profileImage: contactView?.profileImageView.image?.toString() ?? "")
         do {
             try inputValidator.validate(userInput)
             savePokeContact(userInput)
