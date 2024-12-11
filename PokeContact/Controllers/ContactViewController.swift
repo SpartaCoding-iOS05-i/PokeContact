@@ -47,7 +47,7 @@ final class ContactViewController: UIViewController {
             switch result {
             case .success(let image):
                 self?.updateProfileImage(image)
-            case .failure(let error):
+            case .failure:
                 self?.showAlert(title: "프로필 이미지 로드 실패")
             }
         }
