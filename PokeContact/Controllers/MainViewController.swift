@@ -31,7 +31,7 @@ final class MainViewController: UIViewController {
     
     @objc private func addMemberButtonTapped() {
         let addMemberViewController = AddMemberViewController()
-        addMemberViewController.configurePokeProfile()
+        addMemberViewController.fetchRandomImage()
         self.navigationController?.pushViewController(addMemberViewController, animated: true)
     }
     

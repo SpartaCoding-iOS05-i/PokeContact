@@ -40,16 +40,20 @@ final class AddMemberViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
     }
     
-    func configurePokeProfile() {
-        networkManager.fetchRandomPokemon { result in
+    func fetchRandomImage() {
+        networkManager.fetchRandomPokemon { [weak self] result in
             switch result {
             case .success(let image):
-                DispatchQueue.main.async { [weak self] in
-                    self?.addMemberView?.configureProfileImage(image: image)
-                }
+                self?.updateProfileImage(image)
             case .failure(let error):
                 print("Error: \(error)")
             }
+        }
+    }
+    
+    private func updateProfileImage(_ image: UIImage) {
+        DispatchQueue.main.async { [weak self] in
+            self?.addMemberView?.configureProfileImage(image: image)
         }
     }
     
@@ -91,7 +95,7 @@ final class AddMemberViewController: UIViewController {
 
 extension AddMemberViewController: RandomImageButtonDelegate {
     func changeRandomImage() {
-        self.configurePokeProfile()
+        self.fetchRandomImage()
     }
 }
 
