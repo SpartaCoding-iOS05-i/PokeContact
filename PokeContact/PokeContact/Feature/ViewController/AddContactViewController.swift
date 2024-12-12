@@ -29,12 +29,16 @@ final class AddContactViewController: UIViewController {
     
     private let nameTextField: UITextField = {
         let textField = UITextField()
+        textField.keyboardType = .asciiCapable
+        textField.autocapitalizationType = .words
+        textField.autocorrectionType = .no
         textField.borderStyle = .roundedRect
         return textField
     }()
     
     private let phoneNumberTextField: UITextField = {
         let textField = UITextField()
+        textField.keyboardType = .numberPad
         textField.borderStyle = .roundedRect
         return textField
     }()
@@ -83,6 +87,7 @@ final class AddContactViewController: UIViewController {
     
     private func configureUI() {
         view.backgroundColor = .white
+        phoneNumberTextField.delegate = self
         
         let subviews = [
             profileImageView,
@@ -178,13 +183,18 @@ private extension AddContactViewController {
     }
     
     func checkFieldsAndShowAlert() -> Bool {
-        guard let text = nameTextField.text, !text.isEmpty else {
+        guard let name = nameTextField.text, !name.isEmpty else {
             showAlert(title: "이름이 비어있습니다!", message: "이름을 입력해주세요")
             return false
         }
         
-        guard let text = phoneNumberTextField.text, !text.isEmpty else {
+        guard let phoneNumber = phoneNumberTextField.text, !phoneNumber.isEmpty else {
             showAlert(title: "전화번호가 비어있습니다!", message: "전화번호를 입력해주세요")
+            return false
+        }
+        
+        guard validatePhoneNumber(number: phoneNumber) else {
+            showAlert(title: "올바른 전화번호 양식이 아닙니다.", message: "010-xxxx-xxxx 의 양식으로 입력해 주세요")
             return false
         }
         
@@ -193,12 +203,49 @@ private extension AddContactViewController {
     
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
-
         alert.addAction(okAction)
-
         present(alert, animated: true, completion: nil)
+    }
+    
+    // 010-xxxx-xxxx 형태인지 검사
+    func validatePhoneNumber(number: String) -> Bool {
+        let phoneNumberRegex = /^010[0-9]{8}$/
+        guard number.wholeMatch(of: phoneNumberRegex) != nil else {
+            return false
+        }
+        return true
+    }
+}
+
+extension AddContactViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // 새로운 텍스트 검사, 자동으로 하이픈(-) 넣어주고 최대 13자리 넘어갈 경우 입력 제한
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            if updatedText.count > 13 {
+                return false
+            } else {
+                let numericPhoneNumber = updatedText.filter { $0.isNumber }
+                textField.text = makePhoneNumberFormatted(numericPhoneNumber)
+            }
+        }
+        return false
+    }
+    
+    // 01011111111 -> 010-1111-1111
+    func makePhoneNumberFormatted(_ phoneNumber: String) -> String {
+        var stringWithHypen = phoneNumber
+        
+        if stringWithHypen.count > 3 {
+            stringWithHypen.insert("-", at: stringWithHypen.index(stringWithHypen.startIndex, offsetBy: 3))
+        }
+        
+        if stringWithHypen.count > 8 {
+            stringWithHypen.insert("-", at: stringWithHypen.index(stringWithHypen.endIndex, offsetBy: 8 - stringWithHypen.count))
+        }
+        
+        return stringWithHypen
     }
 }
 
