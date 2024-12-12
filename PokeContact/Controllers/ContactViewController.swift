@@ -46,7 +46,10 @@ final class ContactViewController: UIViewController {
     
     private func configureNavigationBar(title: String) {
         self.navigationItem.title = title
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용",
+                                                                 style: .plain,
+                                                                 target: self,
+                                                                 action: #selector(completeButtonTapped))
     }
     
     private func updateProfileImage(_ image: UIImage) {
