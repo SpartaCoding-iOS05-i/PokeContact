@@ -9,8 +9,8 @@ import UIKit
 final class ContactViewController: UIViewController {
     // MARK: - Properties
     private var contactView: ContactView?
-    private let networkManager = NetworkManager()
-    private let pokeDataManager = PokeDataManager()
+    private let pokeNetworkManager = PokeNetworkManager()
+    private let pokeContactManager = PokeContactManager()
     private var oldName: String?
     
     // MARK: - Initializer
@@ -93,12 +93,12 @@ final class ContactViewController: UIViewController {
     
     private func savePokeContact(_ contact: Contact) {
         if let oldName = self.oldName {
-            pokeDataManager.updateMember(currentName: oldName,
+            pokeContactManager.updateContact(currentName: oldName,
                                          updateProfileImage: contact.profileImage,
                                          updateName: contact.name,
                                          updatePhoneNumber: contact.phoneNumber)
         } else {
-            pokeDataManager.createMember(profileImage: contact.profileImage,
+            pokeContactManager.createContact(profileImage: contact.profileImage,
                                          name: contact.name,
                                          phoneNumber: contact.phoneNumber)
         }
@@ -108,7 +108,7 @@ final class ContactViewController: UIViewController {
 // MARK: - Network Methods
 extension ContactViewController {
     private func fetchRandomImage() {
-        networkManager.fetchRandomPokemon { [weak self] result in
+        pokeNetworkManager.fetchRandomPokemon { [weak self] result in
             switch result {
             case .success(let image):
                 self?.updateProfileImage(image)

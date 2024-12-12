@@ -11,7 +11,7 @@ import CoreData
 final class MainViewController: UIViewController {
     // MARK: - Properties
     private let mainView = MainView()
-    private let pokeDataManager = PokeDataManager()
+    private let pokeContactManager = PokeContactManager()
     private var contacts = [NSManagedObject]()
     
     // MARK: - LifeCycle
@@ -44,7 +44,7 @@ final class MainViewController: UIViewController {
     }
     
     private func bind() {
-        guard let contacts = pokeDataManager.readMembers() else { return }
+        guard let contacts = pokeContactManager.readContacts() else { return }
         self.contacts = contacts
         self.mainView.reloadData()
     }
@@ -68,7 +68,7 @@ extension MainViewController: PokeTableViewCellDelegate {
     
     func deleteContact(at indexPath: IndexPath) {
         let deleteContact = Contact(contacts[indexPath.row])
-        pokeDataManager.deleteMember(deleteContact)
+        pokeContactManager.deleteContact(deleteContact)
         contacts.remove(at: indexPath.row)
         self.mainView.reloadData()
     }
