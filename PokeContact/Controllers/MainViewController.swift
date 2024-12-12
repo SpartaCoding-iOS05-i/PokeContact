@@ -27,8 +27,8 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private Functions
     private func setupView() {
-        mainView.delegate = self
         view = mainView
+        mainView.delegate = self
         configureNavigationBar()
     }
     
