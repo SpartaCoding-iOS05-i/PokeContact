@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import CoreData
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
     private let mainView = MainView()
     private let pokeDataManager = PokeDataManager()
+    private var contacts = [NSManagedObject]()
     
     // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
@@ -43,19 +45,32 @@ final class MainViewController: UIViewController {
     
     private func bind() {
         guard let contacts = pokeDataManager.readMembers() else { return }
-        self.mainView.configurePokeContacts(contacts: contacts) 
+        self.contacts = contacts
+        self.mainView.reloadData()
     }
 }
 
 // MARK: - PokeTableViewCellDelegate
 extension MainViewController: PokeTableViewCellDelegate {
-    func cellDidTapped(_ contact: Contact) {
-        let contactViewController = ContactViewController(contact)
+    func numberOfContacts() -> Int {
+        return contacts.count
+    }
+    
+    func contactOfIndex(at indexPath: IndexPath) -> Contact {
+        return Contact(contacts[indexPath.row])
+    }
+    
+    func didSelectContact(at indexPath: IndexPath) {
+        let selectedContact = Contact(contacts[indexPath.row])
+        let contactViewController = ContactViewController(selectedContact)
         self.navigationController?.pushViewController(contactViewController, animated: true)
     }
     
-    func deleteCell(name: String) {
-        pokeDataManager.deleteMember(name: name)
+    func deleteContact(at indexPath: IndexPath) {
+        let deleteContact = Contact(contacts[indexPath.row])
+        pokeDataManager.deleteMember(deleteContact)
+        contacts.remove(at: indexPath.row)
+        self.mainView.reloadData()
     }
 }
 
