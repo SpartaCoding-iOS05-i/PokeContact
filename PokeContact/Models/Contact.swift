@@ -12,6 +12,12 @@ struct Contact {
     let phoneNumber: String
     let profileImage: String
     
+    init(name: String, phoneNumber: String, profileImage: String) {
+        self.name = name
+        self.phoneNumber = phoneNumber
+        self.profileImage = profileImage
+    }
+    
     init(_ object: NSManagedObject) {
         self.name = object.value(forKey: PokeContactBook.Key.name) as? String ?? ""
         self.phoneNumber = object.value(forKey: PokeContactBook.Key.phoneNumber) as? String ?? ""
