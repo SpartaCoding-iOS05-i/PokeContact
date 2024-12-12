@@ -31,7 +31,6 @@ final class MainViewController: UIViewController {
     
     @objc private func addMemberButtonTapped() {
         let contactViewController = ContactViewController()
-        contactViewController.fetchRandomImage()
         self.navigationController?.pushViewController(contactViewController, animated: true)
     }
     

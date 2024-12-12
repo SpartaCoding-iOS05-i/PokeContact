@@ -7,11 +7,13 @@
 import UIKit
 
 final class ContactViewController: UIViewController {
+    // MARK: - Properties
     private var contactView: ContactView?
     private let networkManager = NetworkManager()
     private let pokeDataManager = PokeDataManager()
     private var oldName: String?
     
+    // MARK: - Initializer
     init() {
         self.contactView = ContactView()
         super.init(nibName: nil, bundle: nil)
@@ -31,26 +33,22 @@ final class ContactViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    // MARK: - Private Functions
+    private func setupView() {
         view = contactView
         contactView?.delegate = self
+        self.fetchRandomImage()
     }
     
     private func configureNavigationBar(title: String) {
         self.navigationItem.title = title
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(completeButtonTapped))
-    }
-    
-    func fetchRandomImage() {
-        networkManager.fetchRandomPokemon { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.updateProfileImage(image)
-            case .failure:
-                self?.showAlert(title: "프로필 이미지 로드 실패")
-            }
-        }
     }
     
     private func updateProfileImage(_ image: UIImage) {
@@ -62,12 +60,12 @@ final class ContactViewController: UIViewController {
     @objc private func completeButtonTapped() {
         let inputValidator = InputValidator()
         
-        let userInput = UserInput(name: contactView?.nameTextField.text ?? "",
+        let contact = Contact(name: contactView?.nameTextField.text ?? "",
                                   phoneNumber: contactView?.phoneNumberTextField.text ?? "",
                                   profileImage: contactView?.profileImageView.image?.toString() ?? "")
         do {
-            try inputValidator.validate(userInput)
-            savePokeContact(userInput)
+            try inputValidator.validate(contact)
+            savePokeContact(contact)
             self.navigationController?.popViewController(animated: true)
         } catch let error as ValidationError {
             showAlert(title: error.errorMessage)
@@ -75,20 +73,37 @@ final class ContactViewController: UIViewController {
             showAlert(title: "오류 발생")
         }
     }
-    
-    private func savePokeContact(_ input: UserInput) {
-        if let oldName = self.oldName {
-            pokeDataManager.updateMember(currentName: oldName,
-                                         updateProfileImage: input.profileImage,
-                                         updateName: input.name,
-                                         updatePhoneNumber: input.phoneNumber)
-        } else {
-            pokeDataManager.createMember(profileImage: input.profileImage,
-                                         name: input.name,
-                                         phoneNumber: input.phoneNumber)
+}
+
+// MARK: - Network Methods
+extension ContactViewController {
+    private func fetchRandomImage() {
+        networkManager.fetchRandomPokemon { [weak self] result in
+            switch result {
+            case .success(let image):
+                self?.updateProfileImage(image)
+            case .failure:
+                self?.showAlert(title: "프로필 이미지 로드 실패")
+            }
         }
     }
     
+    private func savePokeContact(_ contact: Contact) {
+        if let oldName = self.oldName {
+            pokeDataManager.updateMember(currentName: oldName,
+                                         updateProfileImage: contact.profileImage,
+                                         updateName: contact.name,
+                                         updatePhoneNumber: contact.phoneNumber)
+        } else {
+            pokeDataManager.createMember(profileImage: contact.profileImage,
+                                         name: contact.name,
+                                         phoneNumber: contact.phoneNumber)
+        }
+    }
+}
+
+// MARK: - Alert Method
+extension ContactViewController {
     private func showAlert(title: String) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         let success  = UIAlertAction(title: "확인", style: .default)
@@ -97,6 +112,7 @@ final class ContactViewController: UIViewController {
 
         present(alert, animated: true, completion: nil)
     }
+    
 }
 
 extension ContactViewController: RandomImageButtonDelegate {
