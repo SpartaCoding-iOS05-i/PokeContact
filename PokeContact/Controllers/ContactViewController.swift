@@ -133,7 +133,7 @@ extension ContactViewController {
 }
 
 // MARK: - RandomImageButtonDelegate
-extension ContactViewController: RandomImageButtonDelegate {
+extension ContactViewController: ContactViewDelegate {
     func changeRandomImage() {
         self.fetchRandomImage()
     }

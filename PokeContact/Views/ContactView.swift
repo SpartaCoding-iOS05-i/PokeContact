@@ -6,12 +6,12 @@
 //
 import UIKit
 
-protocol RandomImageButtonDelegate: AnyObject {
+protocol ContactViewDelegate: AnyObject {
     func changeRandomImage()
 }
 
 final class ContactView: UIView {
-    weak var delegate: RandomImageButtonDelegate?
+    weak var delegate: ContactViewDelegate?
     
     // MARK: - UI Components
     private(set) var profileImageView: UIImageView = {
