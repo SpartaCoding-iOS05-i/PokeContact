@@ -66,9 +66,9 @@ final class PokeDataManager {
         }
     }
     
-    func deleteMember(name: String) {
+    func deleteMember(_ contact: Contact) {
         let fetchRequest = PokeContactBook.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "name == %@", name)
+        fetchRequest.predicate = NSPredicate(format: "name == %@", contact.name)
         
         do {
             let result = try self.container.viewContext.fetch(fetchRequest)
