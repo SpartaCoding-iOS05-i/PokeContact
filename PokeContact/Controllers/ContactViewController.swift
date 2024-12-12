@@ -18,6 +18,7 @@ final class ContactViewController: UIViewController {
         self.contactView = ContactView()
         super.init(nibName: nil, bundle: nil)
         self.configureNavigationBar(title: "연락처 추가")
+        self.fetchRandomImage()
     }
     
     init(_ contact: Contact) {
@@ -41,7 +42,6 @@ final class ContactViewController: UIViewController {
     private func setupView() {
         view = contactView
         contactView?.delegate = self
-        self.fetchRandomImage()
     }
     
     private func configureNavigationBar(title: String) {
