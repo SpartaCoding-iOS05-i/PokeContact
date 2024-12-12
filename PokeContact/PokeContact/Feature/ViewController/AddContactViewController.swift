@@ -52,6 +52,9 @@ final class AddContactViewController: UIViewController {
         configureUI()
         configureNavigationBar()
         configureAction()
+        if editMode == .add {
+            generateRandomImage()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,20 +130,14 @@ final class AddContactViewController: UIViewController {
 private extension AddContactViewController {
     @objc
     func didTapGenerateRandomImageButton() {
-        Task {
-            do {
-                let image = try await imageDownloader.downloadRandomImage()
-                await MainActor.run {
-                    profileImageView.configure(with: UIImage(data: image))
-                }
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        }
+        generateRandomImage()
     }
     
     @objc
     func didTapAddContactButton() {
+        guard checkFieldsAndShowAlert() else {
+            return
+        }
         switch editMode {
         case .add:
             CoreDataStack.shared.createData(
@@ -163,6 +160,45 @@ private extension AddContactViewController {
             }
         }
         navigationController?.popViewController(animated: true)
+    }
+}
+
+private extension AddContactViewController {
+    func generateRandomImage() {
+        Task {
+            do {
+                let image = try await imageDownloader.downloadRandomImage()
+                await MainActor.run {
+                    profileImageView.configure(with: UIImage(data: image))
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func checkFieldsAndShowAlert() -> Bool {
+        guard let text = nameTextField.text, !text.isEmpty else {
+            showAlert(title: "이름이 비어있습니다!", message: "이름을 입력해주세요")
+            return false
+        }
+        
+        guard let text = phoneNumberTextField.text, !text.isEmpty else {
+            showAlert(title: "전화번호가 비어있습니다!", message: "전화번호를 입력해주세요")
+            return false
+        }
+        
+        return true
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+
+        alert.addAction(okAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }
 
