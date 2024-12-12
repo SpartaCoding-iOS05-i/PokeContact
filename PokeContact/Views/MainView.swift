@@ -56,11 +56,8 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
-        let contact = contacts[indexPath.row]
-        let profileImage = contact.value(forKey: PokeContactBook.Key.profileImage) as? String ?? ""
-        let name = contact.value(forKey: PokeContactBook.Key.name) as? String ?? ""
-        let phoneNumber = contact.value(forKey: PokeContactBook.Key.phoneNumber) as? String ?? ""
-        cell.configureCellData(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+        let contact = Contact(contacts[indexPath.row])
+        cell.configureCellData(contact)
         return cell
     }
     
@@ -71,12 +68,8 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let selectedContact = contacts[indexPath.row]
-        let image = selectedContact.value(forKey: PokeContactBook.Key.profileImage) as? String ?? ""
-        let name = selectedContact.value(forKey: PokeContactBook.Key.name) as? String ?? ""
-        let phoneNumber = selectedContact.value(forKey: PokeContactBook.Key.phoneNumber) as? String ?? ""
-        
-        delegate?.cellDidTapped(profileImage: image, name: name, phoneNumber: phoneNumber)
+        let selectedContact = Contact(contacts[indexPath.row])
+        delegate?.cellDidTapped(selectedContact)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
