@@ -6,7 +6,7 @@
 //
 import UIKit
 
-protocol PokeTableViewCellDelegate: AnyObject {
+protocol MainViewDelegate: AnyObject {
     func numberOfContacts() -> Int
     func contactOfIndex(at indexPath: IndexPath) -> Contact
     func didSelectContact(at indexPath: IndexPath)
@@ -16,7 +16,7 @@ protocol PokeTableViewCellDelegate: AnyObject {
 final class MainView: UIView {
     // MARK: - Properites
     private let tableView = UITableView()
-    weak var delegate: PokeTableViewCellDelegate?
+    weak var delegate: MainViewDelegate?
     
     // MARK: - Initailizer
     override init(frame: CGRect) {

@@ -51,7 +51,7 @@ final class MainViewController: UIViewController {
 }
 
 // MARK: - PokeTableViewCellDelegate
-extension MainViewController: PokeTableViewCellDelegate {
+extension MainViewController: MainViewDelegate {
     func numberOfContacts() -> Int {
         return contacts.count
     }
