@@ -18,6 +18,10 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    private func setupView() {
         mainView.delegate = self
         view = mainView
         configureNavigationBar()
@@ -41,8 +45,8 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController: PokeTableViewCellDelegate {
-    func cellDidTapped(profileImage: String, name: String, phoneNumber: String) {
-        let contactViewController = ContactViewController(profileImage: profileImage, name: name, phoneNumber: phoneNumber)
+    func cellDidTapped(_ contact: Contact) {
+        let contactViewController = ContactViewController(contact)
         self.navigationController?.pushViewController(contactViewController, animated: true)
     }
     

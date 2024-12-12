@@ -8,7 +8,7 @@ import UIKit
 import CoreData
 
 protocol PokeTableViewCellDelegate: AnyObject {
-    func cellDidTapped(profileImage: String, name: String, phoneNumber: String)
+    func cellDidTapped(_ contact: Contact)
     func deleteCell(name: String)
 }
 
