@@ -78,9 +78,9 @@ final class ContactViewController: UIViewController {
             return nil
         }
         
-        return Contact(name: profileImage,
-                       phoneNumber: name,
-                       profileImage: phoneNumber)
+        return Contact(name: name,
+                       phoneNumber: phoneNumber,
+                       profileImage: profileImage)
     }
     
     private func validateContact(_ contact: Contact) throws {
