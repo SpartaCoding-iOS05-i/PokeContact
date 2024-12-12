@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 final class MainViewController: UIViewController {
+    
+    // MARK: - View Property
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "친구 목록"
@@ -30,7 +33,11 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: - Property
+    
     private var contacts: [Contact] = []
+    
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +56,8 @@ final class MainViewController: UIViewController {
             contacts = []
         }
     }
+    
+    // MARK: - Configuration
     
     private func setDelegates() {
         contactTableView.delegate = self
@@ -91,12 +100,16 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: - Objc Method
+
 private extension MainViewController {
     @objc
     func addButtonTapped() {
         navigationController?.pushViewController(AddContactViewController(), animated: true)
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -109,6 +122,8 @@ extension MainViewController: UITableViewDelegate {
         navigationController?.pushViewController(newVC, animated: true)
     }
 }
+
+// MARK: - UITableViewDataSource
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

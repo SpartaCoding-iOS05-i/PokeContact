@@ -14,6 +14,9 @@ enum EditMode {
 }
 
 final class AddContactViewController: UIViewController {
+    
+    // MARK: - View Property
+    
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -44,9 +47,13 @@ final class AddContactViewController: UIViewController {
         return textField
     }()
     
+    // MARK: - Property
+    
     private let imageDownloader = ImageDownloader()
     private var editMode: EditMode = .add
     private var contact: Contact?
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +64,18 @@ final class AddContactViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
+    }
+    
+    // MARK: - Configuration
+    
+    /// AddContactVC에 연락처 정보를 주입하는 함수
+    func configureData(with contact: Contact) {
+        self.contact = contact
+        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        nameTextField.text = contact.name
+        phoneNumberTextField.text = contact.phoneNumber
+        title = contact.name
+        editMode = .modify
     }
     
     private func configureNavigationBar() {
@@ -110,6 +129,8 @@ final class AddContactViewController: UIViewController {
     }
 }
 
+// MARK: - Objc Method
+
 private extension AddContactViewController {
     @objc
     func didTapGenerateRandomImageButton() {
@@ -149,17 +170,6 @@ private extension AddContactViewController {
             }
         }
         navigationController?.popViewController(animated: true)
-    }
-}
-
-extension AddContactViewController {
-    func configureData(with contact: Contact) {
-        self.contact = contact
-        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
-        nameTextField.text = contact.name
-        phoneNumberTextField.text = contact.phoneNumber
-        title = contact.name
-        editMode = .modify
     }
 }
 

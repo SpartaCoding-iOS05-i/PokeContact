@@ -47,6 +47,14 @@ final class ContactTableViewCell: UITableViewCell {
         fatalError("not using storyboard")
     }
     
+    // MARK: - Life Cycle
+    
+    override func prepareForReuse() {
+        profileImageView.image = nil
+        nameLabel.text = nil
+        phoneNumberLabel.text = nil
+    }
+    
     // MARK: - UI Configuration
     
     private func configureUI() {
@@ -81,6 +89,7 @@ final class ContactTableViewCell: UITableViewCell {
 }
 
 // MARK: - Cell Configuration
+
 extension ContactTableViewCell {
     
     func configureCell(with contact: Contact) {
