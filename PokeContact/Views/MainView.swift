@@ -13,10 +13,12 @@ protocol PokeTableViewCellDelegate: AnyObject {
 }
 
 final class MainView: UIView {
+    // MARK: - Properites
     private let tableView = UITableView()
     private var contacts = [NSManagedObject]()
     weak var delegate: PokeTableViewCellDelegate?
     
+    // MARK: - Initailizer
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.backgroundColor = .white
@@ -27,6 +29,7 @@ final class MainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Private Functions
     private func configureTableView() {
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: "MainTableViewCell")
         tableView.dataSource = self
@@ -43,12 +46,14 @@ final class MainView: UIView {
         ])
     }
     
+    // MARK: - Set TableView data
     func configurePokeContacts(contacts: [NSManagedObject]) {
         self.contacts = contacts
         self.tableView.reloadData()
     }
 }
 
+// MARK: - TableView Methods
 extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts.count

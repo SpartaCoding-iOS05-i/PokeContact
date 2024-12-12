@@ -8,13 +8,16 @@ import UIKit
 import CoreData
 
 final class PokeDataManager {
+    // MARK: - Property
     private var container: NSPersistentContainer!
     
+    // MARK: - Initailzer
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.container = appDelegate.persistentContainer
     }
     
+    // MARK: - Data CRUD Funtions
     func createMember(profileImage: String, name: String, phoneNumber: String) {
         guard let entity = NSEntityDescription.entity(forEntityName: PokeContactBook.className, in: self.container.viewContext) else { return }
         

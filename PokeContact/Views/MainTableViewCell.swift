@@ -7,6 +7,7 @@
 import UIKit
 
 final class MainTableViewCell: UITableViewCell {
+    // MARK: - UI Componets
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 3
@@ -50,11 +51,13 @@ final class MainTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    // MARK: - LifeCycle
     override func layoutSubviews() {
         super.layoutSubviews()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
+    // MARK: - Initializer
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -66,6 +69,7 @@ final class MainTableViewCell: UITableViewCell {
         fatalError("i0nit(coder:) has not been implemented")
     }
     
+    // MARK: - Private Functions
     private func configureStackViews() {
         self.contentView.addSubview(cellStackView)
     }
@@ -82,6 +86,7 @@ final class MainTableViewCell: UITableViewCell {
         ])
     }
     
+    // MARK: - Set Cell Data
     func configureCellData(_ contact: Contact) {
         self.profileImageView.image = contact.profileImage.toUIImage()
         self.nameLabel.text = contact.name
@@ -89,6 +94,7 @@ final class MainTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - String -> UIImage? Type Convert Methods
 extension String {
     func toUIImage() -> UIImage? {
         guard let imageData = Data(base64Encoded: self) else { return nil }

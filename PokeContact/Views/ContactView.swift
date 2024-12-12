@@ -13,6 +13,7 @@ protocol RandomImageButtonDelegate: AnyObject {
 final class ContactView: UIView {
     weak var delegate: RandomImageButtonDelegate?
     
+    // MARK: - UI Components
     private(set) var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.borderWidth = 5
@@ -62,12 +63,14 @@ final class ContactView: UIView {
         return stackView
     }()
     
+    // MARK: - LifeCycle
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layoutIfNeeded()
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
     }
     
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -85,6 +88,7 @@ final class ContactView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Private Functions
     private func configureUI() {
         self.backgroundColor = .white
         self.addSubview(stackView)
@@ -109,15 +113,17 @@ final class ContactView: UIView {
         ])
     }
     
-    func configureProfileImage(image: UIImage) {
-        self.profileImageView.image = image
-    }
-    
     @objc private func randomImageButtonTapped() {
         delegate?.changeRandomImage()
     }
+    
+    // MARK: - Set Profile Image
+    func configureProfileImage(image: UIImage) {
+        self.profileImageView.image = image
+    }
 }
 
+// MARK: - UITextFieldDelegate
 extension ContactView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else { return false }

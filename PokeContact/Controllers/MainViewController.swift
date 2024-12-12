@@ -8,9 +8,11 @@
 import UIKit
 
 final class MainViewController: UIViewController {
+    // MARK: - Properties
     private let mainView = MainView()
     private let pokeDataManager = PokeDataManager()
     
+    // MARK: - LifeCycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         bind()
@@ -21,6 +23,7 @@ final class MainViewController: UIViewController {
         setupView()
     }
     
+    // MARK: - Private Functions
     private func setupView() {
         mainView.delegate = self
         view = mainView
@@ -44,6 +47,7 @@ final class MainViewController: UIViewController {
     }
 }
 
+// MARK: - PokeTableViewCellDelegate
 extension MainViewController: PokeTableViewCellDelegate {
     func cellDidTapped(_ contact: Contact) {
         let contactViewController = ContactViewController(contact)
