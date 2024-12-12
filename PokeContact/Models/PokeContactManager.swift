@@ -17,7 +17,7 @@ final class PokeContactManager {
         self.container = appDelegate.persistentContainer
     }
     
-    // MARK: - Data CRUD Funtions
+    // MARK: - Data Create
     func createContact(profileImage: String, name: String, phoneNumber: String) {
         guard let entity = NSEntityDescription.entity(forEntityName: PokeContactBook.className, in: self.container.viewContext) else { return }
         
@@ -34,6 +34,7 @@ final class PokeContactManager {
         }
     }
     
+    // MARK: - Data Read
     func readContacts() -> [NSManagedObject]? {
         do {
             let sortDescriptor = NSSortDescriptor(key: PokeContactBook.Key.name, ascending: true)
@@ -45,6 +46,7 @@ final class PokeContactManager {
         }
     }
     
+    // MARK: - Data Update
     func updateContact(currentName: String, updateProfileImage: String, updateName: String, updatePhoneNumber: String) {
         let fetchRequest = PokeContactBook.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", currentName)
@@ -66,6 +68,7 @@ final class PokeContactManager {
         }
     }
     
+    // MARK: - Data Delete
     func deleteContact(_ contact: Contact) {
         let fetchRequest = PokeContactBook.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "name == %@", contact.name)
