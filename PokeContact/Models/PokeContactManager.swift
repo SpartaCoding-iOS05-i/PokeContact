@@ -7,7 +7,7 @@
 import UIKit
 import CoreData
 
-final class PokeDataManager {
+final class PokeContactManager {
     // MARK: - Property
     private var container: NSPersistentContainer!
     
