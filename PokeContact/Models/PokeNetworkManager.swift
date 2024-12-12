@@ -7,7 +7,7 @@
 import UIKit
 import Alamofire
 
-final class NetworkManager {
+final class PokeNetworkManager {
     func fetchRandomPokemon(completion: @escaping (Result<UIImage, Error>) -> Void) {
         let url = "https://pokeapi.co/api/v2/pokemon/\(Int.random(in: 1...1000))"
         
