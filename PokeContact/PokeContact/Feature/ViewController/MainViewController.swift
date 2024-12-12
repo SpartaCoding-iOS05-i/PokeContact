@@ -122,6 +122,16 @@ extension MainViewController: UITableViewDelegate {
         newVC.configureData(with: contacts[indexPath.row])
         navigationController?.pushViewController(newVC, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        do {
+            try CoreDataStack.shared.deleteData(item: contacts[indexPath.row])
+            contacts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        } catch {
+            print("로컬 스토리지에서 삭제 실패")
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
