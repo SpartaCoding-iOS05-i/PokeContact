@@ -23,18 +23,12 @@ enum ValidationError: LocalizedError {
     }
 }
 
-struct UserInput {
-    let name: String
-    let phoneNumber: String
-    let profileImage: String
-}
-
 protocol InputValidatorProtocol: AnyObject {
-    func validate(_ input: UserInput) throws
+    func validate(_ input: Contact) throws
 }
 
 final class InputValidator: InputValidatorProtocol {
-    func validate(_ input: UserInput) throws {
+    func validate(_ input: Contact) throws {
         try validateName(input.name)
         try validatePhoneNumber(input.phoneNumber)
     }
