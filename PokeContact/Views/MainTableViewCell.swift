@@ -82,10 +82,10 @@ final class MainTableViewCell: UITableViewCell {
         ])
     }
     
-    func configureCellData(profileImage: String, name: String, phoneNumber: String) {
-        self.profileImageView.image = profileImage.toUIImage()
-        self.nameLabel.text = name
-        self.phoneNumberLabel.text = phoneNumber
+    func configureCellData(_ contact: Contact) {
+        self.profileImageView.image = contact.profileImage.toUIImage()
+        self.nameLabel.text = contact.name
+        self.phoneNumberLabel.text = contact.phoneNumber
     }
 }
 
