@@ -73,6 +73,19 @@ final class ContactViewController: UIViewController {
             showAlert(title: "오류 발생")
         }
     }
+    
+    private func savePokeContact(_ contact: Contact) {
+        if let oldName = self.oldName {
+            pokeDataManager.updateMember(currentName: oldName,
+                                         updateProfileImage: contact.profileImage,
+                                         updateName: contact.name,
+                                         updatePhoneNumber: contact.phoneNumber)
+        } else {
+            pokeDataManager.createMember(profileImage: contact.profileImage,
+                                         name: contact.name,
+                                         phoneNumber: contact.phoneNumber)
+        }
+    }
 }
 
 // MARK: - Network Methods
@@ -85,19 +98,6 @@ extension ContactViewController {
             case .failure:
                 self?.showAlert(title: "프로필 이미지 로드 실패")
             }
-        }
-    }
-    
-    private func savePokeContact(_ contact: Contact) {
-        if let oldName = self.oldName {
-            pokeDataManager.updateMember(currentName: oldName,
-                                         updateProfileImage: contact.profileImage,
-                                         updateName: contact.name,
-                                         updatePhoneNumber: contact.phoneNumber)
-        } else {
-            pokeDataManager.createMember(profileImage: contact.profileImage,
-                                         name: contact.name,
-                                         phoneNumber: contact.phoneNumber)
         }
     }
 }
@@ -115,12 +115,14 @@ extension ContactViewController {
     
 }
 
+// MARK: - RandomImageButtonDelegate
 extension ContactViewController: RandomImageButtonDelegate {
     func changeRandomImage() {
         self.fetchRandomImage()
     }
 }
 
+// MARK: - UIImage -> String? Type Convert
 extension UIImage {
     func toString() -> String? {
         guard let imageData = self.pngData() else {
