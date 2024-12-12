@@ -5,17 +5,17 @@
 //  Created by 이명지 on 12/9/24.
 //
 import UIKit
-import CoreData
 
 protocol PokeTableViewCellDelegate: AnyObject {
-    func cellDidTapped(_ contact: Contact)
-    func deleteCell(name: String)
+    func numberOfContacts() -> Int
+    func contactOfIndex(at indexPath: IndexPath) -> Contact
+    func didSelectContact(at indexPath: IndexPath)
+    func deleteContact(at indexPath: IndexPath)
 }
 
 final class MainView: UIView {
     // MARK: - Properites
     private let tableView = UITableView()
-    private var contacts = [NSManagedObject]()
     weak var delegate: PokeTableViewCellDelegate?
     
     // MARK: - Initailizer
@@ -47,8 +47,7 @@ final class MainView: UIView {
     }
     
     // MARK: - Set TableView data
-    func configurePokeContacts(contacts: [NSManagedObject]) {
-        self.contacts = contacts
+    func reloadData() {
         self.tableView.reloadData()
     }
 }
@@ -56,13 +55,14 @@ final class MainView: UIView {
 // MARK: - TableView Methods
 extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contacts.count
+        return self.delegate?.numberOfContacts() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
-        let contact = Contact(contacts[indexPath.row])
-        cell.configureCellData(contact)
+        if let contact = self.delegate?.contactOfIndex(at: indexPath) {
+            cell.configureCellData(contact)
+        }
         return cell
     }
     
@@ -72,9 +72,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        let selectedContact = Contact(contacts[indexPath.row])
-        delegate?.cellDidTapped(selectedContact)
+        self.delegate?.didSelectContact(at: indexPath)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -83,10 +81,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let name = contacts[indexPath.row].value(forKey: PokeContactBook.Key.name) as? String ?? ""
-            delegate?.deleteCell(name: name)
-            contacts.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.delegate?.deleteContact(at: indexPath)
         }
     }
     
