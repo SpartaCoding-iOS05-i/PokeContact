@@ -62,7 +62,6 @@ final class PokeContactManager {
                 try self.container.viewContext.save()
                 print("데이터 수정 완료")
             }
-            
         } catch {
             print("데이터 수정 실패")
         }
@@ -81,7 +80,6 @@ final class PokeContactManager {
             }
             try self.container.viewContext.save()
             print("데이터 삭제 완료")
-            
         } catch {
             print("데이터 삭제 실패: \(error)")
         }
