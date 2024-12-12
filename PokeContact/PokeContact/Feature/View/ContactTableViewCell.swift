@@ -12,15 +12,7 @@ final class ContactTableViewCell: UITableViewCell {
     
     // MARK: - View Property
     
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = UIColor.gray.cgColor
-        imageView.layer.cornerRadius = 30
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private let profileImageView = ContactImageView(width: 60)
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -50,7 +42,8 @@ final class ContactTableViewCell: UITableViewCell {
     // MARK: - Life Cycle
     
     override func prepareForReuse() {
-        profileImageView.image = nil
+        super.prepareForReuse()
+        profileImageView.prepareForReuse()
         nameLabel.text = nil
         phoneNumberLabel.text = nil
     }
@@ -95,7 +88,7 @@ extension ContactTableViewCell {
     func configureCell(with contact: Contact) {
         nameLabel.text = contact.name
         phoneNumberLabel.text = contact.phoneNumber
-        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        profileImageView.configure(with: UIImage(data: contact.profileImage ?? Data()))
     }
 }
 

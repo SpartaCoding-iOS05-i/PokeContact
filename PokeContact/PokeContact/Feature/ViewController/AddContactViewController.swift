@@ -17,15 +17,7 @@ final class AddContactViewController: UIViewController {
     
     // MARK: - View Property
     
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.borderWidth = 2.0
-        imageView.layer.borderColor = UIColor.gray.cgColor
-        imageView.layer.cornerRadius = 100
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private let profileImageView = ContactImageView(width: 200)
     
     private let generateRandomImageButton: UIButton = {
         let button = UIButton()
@@ -63,6 +55,7 @@ final class AddContactViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = false
     }
     
@@ -71,7 +64,7 @@ final class AddContactViewController: UIViewController {
     /// AddContactVC에 연락처 정보를 주입하는 함수
     func configureData(with contact: Contact) {
         self.contact = contact
-        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        profileImageView.configure(with: UIImage(data: contact.profileImage ?? Data()))
         nameTextField.text = contact.name
         phoneNumberTextField.text = contact.phoneNumber
         title = contact.name
@@ -138,7 +131,7 @@ private extension AddContactViewController {
             do {
                 let image = try await imageDownloader.downloadRandomImage()
                 await MainActor.run {
-                    profileImageView.image = UIImage(data: image)
+                    profileImageView.configure(with: UIImage(data: image))
                 }
             } catch let error {
                 print(error.localizedDescription)
@@ -153,7 +146,7 @@ private extension AddContactViewController {
             CoreDataStack.shared.createData(
                 name: nameTextField.text ?? "",
                 phoneNumber: phoneNumberTextField.text ?? "",
-                profileImage: profileImageView.image?.pngData() ?? Data()
+                profileImage: profileImageView.getImageData() ?? Data()
             )
             
         case .modify:
@@ -163,7 +156,7 @@ private extension AddContactViewController {
                     id: contact.id,
                     name: nameTextField.text ?? "",
                     phoneNumber: phoneNumberTextField.text ?? "",
-                    profileImage: profileImageView.image?.pngData() ?? Data()
+                    profileImage: profileImageView.getImageData() ?? Data()
                 )
             } catch {
                 print(error.localizedDescription)

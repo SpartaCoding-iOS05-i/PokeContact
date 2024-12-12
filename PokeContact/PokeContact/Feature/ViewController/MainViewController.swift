@@ -47,6 +47,7 @@ final class MainViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         do {
             contacts = try CoreDataStack.shared.readAllData()
