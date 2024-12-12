@@ -20,13 +20,11 @@ final class ContactViewController: UIViewController {
         self.configureNavigationBar(title: "연락처 추가")
     }
     
-    init(profileImage: String, name: String, phoneNumber: String) {
-        self.oldName = name
-        self.contactView = ContactView(profileImage: profileImage,
-                                           name: name,
-                                           phoneNumber: phoneNumber)
+    init(_ contact: Contact) {
+        self.oldName = contact.name
+        self.contactView = ContactView(contact)
         super.init(nibName: nil, bundle: nil)
-        self.configureNavigationBar(title: name)
+        self.configureNavigationBar(title: contact.name)
     }
     
     required init?(coder: NSCoder) {
@@ -58,13 +56,9 @@ final class ContactViewController: UIViewController {
     }
     
     @objc private func completeButtonTapped() {
-        let inputValidator = InputValidator()
-        
-        let contact = Contact(name: contactView?.nameTextField.text ?? "",
-                                  phoneNumber: contactView?.phoneNumberTextField.text ?? "",
-                                  profileImage: contactView?.profileImageView.image?.toString() ?? "")
+        guard let contact = createContact() else { return }
         do {
-            try inputValidator.validate(contact)
+            try validateContact(contact)
             savePokeContact(contact)
             self.navigationController?.popViewController(animated: true)
         } catch let error as ValidationError {
@@ -72,6 +66,26 @@ final class ContactViewController: UIViewController {
         } catch {
             showAlert(title: "오류 발생")
         }
+    }
+    
+    private func createContact() -> Contact? {
+        guard let name = contactView?.nameTextField.text,
+              let phoneNumber = contactView?.phoneNumberTextField.text,
+              let profileImage = contactView?.profileImageView.image?.toString() else {
+            return nil
+        }
+        
+        return Contact(name: profileImage,
+                       phoneNumber: name,
+                       profileImage: phoneNumber)
+    }
+    
+    private func validateContact(_ contact: Contact) throws {
+        let inputValidator = InputValidator()
+        let contact = Contact(name: contact.name,
+                                phoneNumber: contact.phoneNumber,
+                                profileImage: contact.profileImage)
+        try inputValidator.validate(contact)
     }
     
     private func savePokeContact(_ contact: Contact) {

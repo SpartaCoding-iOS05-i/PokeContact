@@ -73,11 +73,11 @@ final class ContactView: UIView {
         configureUI()
     }
     
-    init(profileImage: String, name: String, phoneNumber: String) {
+    init(_ contact: Contact) {
         super.init(frame: .zero)
-        self.profileImageView.image = profileImage.toUIImage()
-        self.nameTextField.text = name
-        self.phoneNumberTextField.text = phoneNumber
+        self.profileImageView.image = contact.profileImage.toUIImage()
+        self.nameTextField.text = contact.name
+        self.phoneNumberTextField.text = contact.phoneNumber
         configureUI()
     }
     
