@@ -24,7 +24,7 @@ final class ContactTableViewCell: UITableViewCell {
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.text = "010-1111-1111"
-        label.font = .systemFont(ofSize: 18)
+        label.font = .monospacedDigitSystemFont(ofSize: 18, weight: .regular)
         return label
     }()
     

@@ -33,6 +33,7 @@ final class AddContactViewController: UIViewController {
         textField.autocapitalizationType = .words
         textField.autocorrectionType = .no
         textField.borderStyle = .roundedRect
+        textField.font = .monospacedSystemFont(ofSize: 18, weight: .regular)
         return textField
     }()
     
@@ -40,6 +41,7 @@ final class AddContactViewController: UIViewController {
         let textField = UITextField()
         textField.keyboardType = .numberPad
         textField.borderStyle = .roundedRect
+        textField.font = .monospacedDigitSystemFont(ofSize: 18, weight: .regular)
         return textField
     }()
     
