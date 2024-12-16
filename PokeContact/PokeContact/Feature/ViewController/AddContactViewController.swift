@@ -54,7 +54,7 @@ final class AddContactViewController: UIViewController {
     
     private func configureNavigationBar() {
         title = "연락처 추가"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .done, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .done, target: self, action: #selector(didTapAddContactButton))
     }
     
     private func configureUI() {
@@ -114,6 +114,17 @@ private extension AddContactViewController {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    @objc
+    func didTapAddContactButton() {
+        CoreDataStack.shared.createData(
+            name: nameTextField.text ?? "",
+            phoneNumber: phoneNumberTextField.text ?? "",
+            profileImage: profileImageView.image?.pngData() ?? Data()
+        )
+        
+        navigationController?.popViewController(animated: true)
     }
 }
 
