@@ -38,23 +38,26 @@ final class AddContactViewController: UIViewController {
         textField.borderStyle = .roundedRect
         return textField
     }()
-        
+    
+    private let imageDownloader = ImageDownloader()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureNavigationBar()
+        configureAction()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         title = "연락처 추가"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .done, target: nil, action: nil)
     }
     
-    func configureUI() {
+    private func configureUI() {
         view.backgroundColor = .white
         
         let subviews = [
@@ -90,6 +93,26 @@ final class AddContactViewController: UIViewController {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(nameTextField.snp.bottom).offset(8)
+        }
+    }
+    
+    private func configureAction() {
+        generateRandomImageButton.addTarget(self, action: #selector(didTapGenerateRandomImageButton), for: .touchUpInside)
+    }
+}
+
+private extension AddContactViewController {
+    @objc
+    func didTapGenerateRandomImageButton() {
+        Task {
+            do {
+                let image = try await imageDownloader.downloadRandomImage()
+                await MainActor.run {
+                    profileImageView.image = UIImage(data: image)
+                }
+            } catch let error {
+                print(error.localizedDescription)
+            }
         }
     }
 }
