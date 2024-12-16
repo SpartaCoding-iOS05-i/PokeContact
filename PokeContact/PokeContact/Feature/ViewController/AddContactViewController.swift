@@ -195,7 +195,9 @@ private extension AddContactViewController {
             return false
         }
         
-        guard validatePhoneNumber(number: phoneNumber) else {
+        let refinedPhoneNumber = refinePhoneNumber(phoneNumber)
+        
+        guard validatePhoneNumber(number: refinedPhoneNumber) else {
             showAlert(title: "올바른 전화번호 양식이 아닙니다.", message: "010-xxxx-xxxx 의 양식으로 입력해 주세요")
             return false
         }
@@ -217,6 +219,11 @@ private extension AddContactViewController {
             return false
         }
         return true
+    }
+    
+    func refinePhoneNumber(_ phoneNumber: String) -> String {
+        let newPhoneNumber = phoneNumber.replacingOccurrences(of: "-", with: "")
+        return newPhoneNumber
     }
 }
 
