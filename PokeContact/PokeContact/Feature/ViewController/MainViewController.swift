@@ -34,6 +34,11 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setDelegates()
         configureUI()
+        configureButtonAction()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = true
     }
     
     private func setDelegates() {
@@ -42,6 +47,8 @@ final class MainViewController: UIViewController {
     }
     
     private func configureUI() {
+        view.backgroundColor = .white
+        
         let subviews = [
             titleLabel,
             addButton,
@@ -51,7 +58,7 @@ final class MainViewController: UIViewController {
         subviews.forEach {
             view.addSubview($0)
         }
-        
+     
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.centerX.equalToSuperview()
@@ -68,6 +75,17 @@ final class MainViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.bottom.equalToSuperview().offset(-16)
         }
+    }
+    
+    private func configureButtonAction() {
+        addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+    }
+}
+
+private extension MainViewController {
+    @objc
+    func addButtonTapped() {
+        navigationController?.pushViewController(AddContactViewController(), animated: true)
     }
 }
 
