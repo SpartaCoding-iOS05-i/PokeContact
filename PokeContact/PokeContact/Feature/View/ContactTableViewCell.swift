@@ -12,15 +12,7 @@ final class ContactTableViewCell: UITableViewCell {
     
     // MARK: - View Property
     
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = UIColor.gray.cgColor
-        imageView.layer.cornerRadius = 30
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private let profileImageView = ContactImageView(width: 60)
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +24,7 @@ final class ContactTableViewCell: UITableViewCell {
     private let phoneNumberLabel: UILabel = {
         let label = UILabel()
         label.text = "010-1111-1111"
-        label.font = .systemFont(ofSize: 18)
+        label.font = .monospacedDigitSystemFont(ofSize: 18, weight: .regular)
         return label
     }()
     
@@ -45,6 +37,15 @@ final class ContactTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("not using storyboard")
+    }
+    
+    // MARK: - Life Cycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        profileImageView.prepareForReuse()
+        nameLabel.text = nil
+        phoneNumberLabel.text = nil
     }
     
     // MARK: - UI Configuration
@@ -81,12 +82,13 @@ final class ContactTableViewCell: UITableViewCell {
 }
 
 // MARK: - Cell Configuration
+
 extension ContactTableViewCell {
     
     func configureCell(with contact: Contact) {
         nameLabel.text = contact.name
         phoneNumberLabel.text = contact.phoneNumber
-        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        profileImageView.configure(with: UIImage(data: contact.profileImage ?? Data()))
     }
 }
 

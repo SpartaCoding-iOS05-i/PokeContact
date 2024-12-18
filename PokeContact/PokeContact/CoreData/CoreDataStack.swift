@@ -89,8 +89,14 @@ extension CoreDataStack {
         }
     }
     
-    func deleteData(item: ContactEntity) {
-        persistentContainer.viewContext.delete(item)
+    func deleteData(item: Contact) throws {
+        let request = ContactEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "phoneNumber == %@", item.phoneNumber)
+        
+        let result = try self.persistentContainer.viewContext.fetch(request)
+        for data in result as [NSManagedObject] {
+            persistentContainer.viewContext.delete(data)
+        }
         save()
     }
 }
