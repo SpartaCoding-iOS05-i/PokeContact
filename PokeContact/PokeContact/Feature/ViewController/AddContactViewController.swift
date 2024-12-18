@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+enum EditMode {
+    case add
+    case modify
+}
+
 final class AddContactViewController: UIViewController {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -40,6 +45,8 @@ final class AddContactViewController: UIViewController {
     }()
     
     private let imageDownloader = ImageDownloader()
+    private var editMode: EditMode = .add
+    private var contact: Contact?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +60,9 @@ final class AddContactViewController: UIViewController {
     }
     
     private func configureNavigationBar() {
-        title = "연락처 추가"
+        if title == nil {
+            title = "연락처 추가"
+        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .done, target: self, action: #selector(didTapAddContactButton))
     }
     
@@ -118,13 +127,39 @@ private extension AddContactViewController {
     
     @objc
     func didTapAddContactButton() {
-        CoreDataStack.shared.createData(
-            name: nameTextField.text ?? "",
-            phoneNumber: phoneNumberTextField.text ?? "",
-            profileImage: profileImageView.image?.pngData() ?? Data()
-        )
-        
+        switch editMode {
+        case .add:
+            CoreDataStack.shared.createData(
+                name: nameTextField.text ?? "",
+                phoneNumber: phoneNumberTextField.text ?? "",
+                profileImage: profileImageView.image?.pngData() ?? Data()
+            )
+            
+        case .modify:
+            guard let contact else { return }
+            do {
+                try CoreDataStack.shared.updateData(
+                    id: contact.id,
+                    name: nameTextField.text ?? "",
+                    phoneNumber: phoneNumberTextField.text ?? "",
+                    profileImage: profileImageView.image?.pngData() ?? Data()
+                )
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
         navigationController?.popViewController(animated: true)
+    }
+}
+
+extension AddContactViewController {
+    func configureData(with contact: Contact) {
+        self.contact = contact
+        profileImageView.image = UIImage(data: contact.profileImage ?? Data())
+        nameTextField.text = contact.name
+        phoneNumberTextField.text = contact.phoneNumber
+        title = contact.name
+        editMode = .modify
     }
 }
 
