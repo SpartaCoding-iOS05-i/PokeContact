@@ -5,9 +5,9 @@
 //  Created by t0000-m0112 on 2024-12-09.
 //
 
-protocol MainViewModelDelegate: AnyObject {
-    
-}
+import Foundation
+
+protocol MainViewModelDelegate: AnyObject {}
 
 class MainViewModel {
     private weak var coordinator: MainCoordinatorProtocol?
@@ -35,30 +35,10 @@ class MainViewModel {
     func fetchContacts() {
         do {
             contacts = try repository.fetchContacts()
-            print("Fetched contacts: \(contacts)")
+            print("MainViewModel: Fetched contacts: \(contacts)")
             onDataUpdated?()
         } catch {
-            print("Failed to fetch contacts: \(error)")
-        }
-    }
-    
-    func addContact(name: String, phone: String) {
-        do {
-            try repository.addContact(name: name, phone: phone)
-            fetchContacts()
-        } catch {
-            print("Failed to add contact: \(error)")
-        }
-    }
-    
-    func updateContact(at index: Int, withName name: String, andPhone phone: String) throws {
-        guard index < contacts.count else { return }
-        let contact = contacts[index]
-        do {
-            try repository.updateContact(contact, withName: name, andPhone: phone)
-            fetchContacts()
-        } catch {
-            print("Failed to update contact: \(error)")
+            print("MainViewModel: Failed to fetch contacts: \(error)")
         }
     }
     
@@ -66,10 +46,11 @@ class MainViewModel {
         guard index < contacts.count else { return }
         let contact = contacts[index]
         do {
+            print("MainViewModel: Deleting contact: \(contact)")
             try repository.deleteContact(contact)
             fetchContacts()
         } catch {
-            print("Faield to delete contact: \(error)")
+            print("MainViewModel: Failed to delete contact: \(error)")
         }
     }
 }

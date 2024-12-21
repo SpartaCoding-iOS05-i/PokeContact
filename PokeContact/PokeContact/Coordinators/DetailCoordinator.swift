@@ -9,28 +9,42 @@ import UIKit
 
 protocol DetailCoordinatorProtocol: AnyObject {
     func navigateBack()
-    func start(with viewController: UIViewController)
 }
 
-class DetailCoordinator: Coordinator {
+class DetailCoordinator {
     var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
+    private let contactRepository: ContactRepository
     
-    init(navigationController: UINavigationController) {
+    init(
+        navigationController: UINavigationController,
+        contactRepository: ContactRepository
+    ) {
         self.navigationController = navigationController
+        self.contactRepository = contactRepository
     }
     
-    func start() {
-        // Use navigationController instead
+    func start(with mode: ContactMode) {
+        let detailViewModel = DetailViewModel(
+            coordinator: self,
+            repository: contactRepository
+        )
+        
+        let detailViewController = DetailViewController(
+            viewModel: detailViewModel,
+            mode: mode
+        )
+        
+        navigationController.pushViewController(detailViewController, animated: true)
     }
 }
 
 extension DetailCoordinator: DetailCoordinatorProtocol {
-    func start(with viewController: UIViewController) {
-        navigationController.pushViewController(viewController, animated: true)
-    }
-    
     func navigateBack() {
         navigationController.popViewController(animated: true)
     }
+}
+
+extension DetailCoordinator: Coordinator {
+    func start() {}
 }

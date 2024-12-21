@@ -14,6 +14,7 @@ class AppCoordinator: Coordinator {
     private let window: UIWindow
     private let navigationController: UINavigationController
     private let context: NSManagedObjectContext
+    private let pokemonFetcher = PokemonFetcher()
     
     init(window: UIWindow, navigationController: UINavigationController, context: NSManagedObjectContext) {
         self.window = window
@@ -22,12 +23,16 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        let contactRepository = ContactRepository(context: context)
+        let contactRepository = ContactRepository(
+            context: context,
+            pokemonFetcher: pokemonFetcher
+        )
+
         let mainCoordinator = MainCoordinator(
             navigationController: navigationController,
-            detailCoordinatorFactory: { DetailCoordinator(navigationController: self.navigationController) },
             contactRepository: contactRepository
         )
+        
         childCoordinators.append(mainCoordinator)
         mainCoordinator.start()
         

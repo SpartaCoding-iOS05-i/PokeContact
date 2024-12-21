@@ -29,8 +29,12 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         configureUI()
         setupTableView()
         bindViewModel()
-        viewModel.fetchContacts()
         viewModel.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchContacts()
     }
     
     // MARK: - UI Configuration
@@ -58,7 +62,10 @@ class MainViewController: UIViewController, MainViewModelDelegate {
     
     private func bindViewModel() {
         viewModel.onDataUpdated = { [weak self] in
-            self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                print("MainViewController: Contacts updated. Reloading table view.")
+                self?.tableView.reloadData()
+            }
         }
     }
     
