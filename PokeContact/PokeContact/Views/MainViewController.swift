@@ -10,6 +10,7 @@ import SnapKit
 import Then
 
 class MainViewController: UIViewController, MainViewModelDelegate {
+    private let tableView = UITableView()
     private let viewModel: MainViewModel
 
     init(viewModel: MainViewModel) {
@@ -24,31 +25,85 @@ class MainViewController: UIViewController, MainViewModelDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        setupTableView()
+        bindViewModel()
+        viewModel.fetchContacts()
         viewModel.delegate = self
+        testCRuD()
     }
     
     // MARK: - UI Configuration
     private func configureUI() {
-        view.backgroundColor = .systemPink
-        
-        let button = UIButton(type: .system).then {
-            $0.setTitle("Button", for: .normal)
-            $0.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        }
-        
-        [
-            button,
-        ].forEach { view.addSubview($0) }
-
-        button.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.width.equalTo(120)
-            $0.height.equalTo(44)
-        }
+        self.view.backgroundColor = .systemBackground
+        self.title = "Friend List"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Add",
+            style: .plain,
+            target: self,
+            action: #selector(didTapButton))
     }
     
     @objc private func didTapButton() {
         viewModel.didTapNavigate()
     }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(ContactCell.self, forCellReuseIdentifier: ContactCell.identifier)
+        tableView.separatorInset = .init(top: 0, left: 30, bottom: 0, right: 30)
+        tableView.tableHeaderView = UIView()
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    private func bindViewModel() {
+        viewModel.onDataUpdated = { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.contacts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactCell.identifier, for: indexPath) as? ContactCell else {
+            return UITableViewCell()
+        }
+        let contact = viewModel.contacts[indexPath.row]
+        cell.configure(with: contact)
+        return cell
+    }
+}
+
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let contact = viewModel.contacts[indexPath.row]
+        print("Selected contact: \(contact.fullName ?? "")")
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            viewModel.deleteContact(at: indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        80
+    }
+}
+
+// MARK: - Test Methods
+extension MainViewController {
+    func testCRuD() {
+        viewModel.addContact(name: "TEST1", phone: "010-1111-2222")
+        viewModel.addContact(name: "TEST2", phone: "010-2222-3333")
+    }
+}

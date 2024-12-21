@@ -5,6 +5,7 @@
 //  Created by t0000-m0112 on 2024-12-09.
 //
 
+import CoreData
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -17,12 +18,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
         let window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController()
         
-        appCoordinator = AppCoordinator(window: window, navigationController: navigationController)
-        self.window = window
-        appCoordinator?.start()
+        if let context = context {
+            appCoordinator = AppCoordinator(
+                window: window,
+                navigationController: navigationController,
+                context: context
+            )
+            self.window = window
+            appCoordinator?.start()
+        } else {
+            fatalError("Failed to load Core Data context.")
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -51,7 +61,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
