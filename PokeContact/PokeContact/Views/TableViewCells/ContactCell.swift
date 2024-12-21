@@ -66,13 +66,3 @@ class ContactCell: UITableViewCell {
         phoneLabel.text = contact.phoneNumber
     }
 }
-
-// MARK: - ImageView Subclass
-class RoundImageView: UIImageView {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.cornerRadius = bounds.height / 2
-        self.layer.borderWidth = 2
-        self.layer.borderColor = UIColor.systemGray4.cgColor
-    }
-}
